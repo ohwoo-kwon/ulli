@@ -5,14 +5,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import {
-  SidebarProvider,
-  SidebarTrigger,
-} from "./common/components/ui/sidebar";
+import { SidebarProvider } from "./common/components/ui/sidebar";
 import { AppSidebar } from "./common/components/app-sidebar";
 
 export const links: Route.LinksFunction = () => [
@@ -38,22 +36,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <SidebarProvider>
-          <AppSidebar />
-          <main>
-            <SidebarTrigger />
-            {children}
-            <ScrollRestoration />
-            <Scripts />
-          </main>
-        </SidebarProvider>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
       </body>
     </html>
   );
 }
 
 export default function App() {
-  return <Outlet />;
+  const { pathname } = useLocation();
+  if (pathname.includes("/diet")) {
+    return (
+      <SidebarProvider>
+        <AppSidebar />
+        <main className="w-full">
+          <Outlet />
+        </main>
+      </SidebarProvider>
+    );
+  } else return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
