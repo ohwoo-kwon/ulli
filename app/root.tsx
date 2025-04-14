@@ -46,9 +46,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
   return (
     <div>
-      <Navigation />
+      {!pathname.includes("auth") && <Navigation />}
       <Outlet />
     </div>
   );
