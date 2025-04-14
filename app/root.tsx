@@ -12,6 +12,7 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { SidebarProvider } from "./common/components/ui/sidebar";
 import { AppSidebar } from "./common/components/app-sidebar";
+import Navigation from "./common/components/navigation";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -45,17 +46,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const { pathname } = useLocation();
-  if (pathname.includes("/diet")) {
-    return (
-      <SidebarProvider>
-        <AppSidebar />
-        <main className="w-full">
-          <Outlet />
-        </main>
-      </SidebarProvider>
-    );
-  } else return <Outlet />;
+  return (
+    <div>
+      <Navigation />
+      <Outlet />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

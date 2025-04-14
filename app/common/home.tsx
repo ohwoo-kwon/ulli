@@ -1,5 +1,3 @@
-import { redirect } from "react-router";
-
-export const loader = () => {
-  return redirect("/diet");
-};
+export default function Home() {
+  return <div>HOME</div>;
+}

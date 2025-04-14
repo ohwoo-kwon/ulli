@@ -11,8 +11,5 @@ export default [
     route("/login", "features/auth/pages/login.tsx"),
     route("/sign-up", "features/auth/pages/sign-up.tsx"),
   ]),
-  ...prefix("/diet", [
-    index("features/diet/pages/diet.tsx"),
-    route("/upload", "features/diet/pages/upload.tsx"),
-  ]),
+  route("/upload", "features/upload/pages/upload.tsx"),
 ] satisfies RouteConfig;
