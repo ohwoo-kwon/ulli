@@ -12,4 +12,8 @@ export default [
     route("/sign-up", "features/auth/pages/sign-up.tsx"),
   ]),
   route("/upload", "features/upload/pages/upload.tsx"),
+  ...prefix("/api", [
+    route("/image/description", "apis/image/description.tsx"),
+    route("/image/manipulation", "apis/image/manipulation.tsx"),
+  ]),
 ] satisfies RouteConfig;
