@@ -8,8 +8,33 @@ import {
 } from "~/common/components/ui/card";
 
 export default function UploadPage() {
-  const handleClickText = () => {
-    console.log("텍스트 변환");
+  const handleClickText = async () => {
+    const res = await (
+      await fetch(
+        "https://kmsproject.openai.azure.com/openai/deployments/dall-e-3/images/generation?api-version=2024-02-01",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "api-key":
+              "6v77E9pLDMR66xQdCKqh5UUZD5QpYLM7S6LjjIJRGEnOMEJGfFgGJQQJ99AKACYeBjFXJ3w3AAABACOGYiAC",
+          },
+          body: JSON.stringify({
+            messages: [
+              {
+                prompt: "핑크색 집업 후드티 그려줘.",
+                size: "1024X1024",
+                n: 1,
+                quality: "hd",
+                style: "vivid",
+              },
+            ],
+          }),
+        }
+      )
+    ).json();
+
+    console.log(res);
   };
 
   const handleClickImage = () => {
@@ -17,7 +42,7 @@ export default function UploadPage() {
   };
   return (
     <div className="px-2 py-4 space-y-10">
-      <div className="flex flex-col items-center gap-5 lg:flex-row lg:items-stretch">
+      <div className="flex flex-col items-center gap-5 xl:flex-row lg:items-stretch">
         <div className="flex flex-col gap-2">
           <ImageUpload name="cloth_img" />
           <Button onClick={handleClickText}>텍스트 변환</Button>

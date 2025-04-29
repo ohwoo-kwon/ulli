@@ -1,50 +1,59 @@
-import { useState } from "react";
+import { Link } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuItem,
+  NavigationMenuLink,
   NavigationMenuList,
+  navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
-import { MenuIcon, X } from "lucide-react";
+import { Button } from "./ui/button";
 import { cn } from "~/lib/utils";
-import { Link } from "react-router";
-import { Separator } from "./ui/separator";
 
 export default function Navigation() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
-    <>
-      <NavigationMenu className="py-2 px-4 w-full max-w-none bg-primary justify-end sm:justify-start text-primary-foreground">
-        {/* Mobile Navigation */}
-        <NavigationMenuList className="sm:hidden">
-          <NavigationMenuItem
-            className="cursor-pointer"
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}>
-            {isMobileMenuOpen ? <X /> : <MenuIcon />}
-          </NavigationMenuItem>
-        </NavigationMenuList>
-
-        {/* Desktop Navigation */}
-        <NavigationMenuList className="gap-10 hidden sm:flex">
+    <header className="py-1 px-5 flex justify-between items-center bg-primary">
+      <h1 className="text-primary-foreground text-xl font-bold tracking-widest">
+        <Link to="/">ULLI</Link>
+      </h1>
+      <NavigationMenu>
+        <NavigationMenuList>
           <NavigationMenuItem>
-            <Link to="/">홈</Link>
+            <NavigationMenuLink
+              href="/images/upload"
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "bg-primary text-primary-foreground"
+              )}>
+              이미지 만들기
+            </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link to="/upload">업로드</Link>
+            <NavigationMenuLink
+              href="/images"
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "bg-primary text-primary-foreground"
+              )}>
+              내 이미지
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="/advertisements"
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "bg-primary text-primary-foreground"
+              )}>
+              광고
+            </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-
-      <div
-        className={cn(
-          "absolute top-10 left-0 right-0 z-50 bg-primary text-primary-foreground sm:hidden transition-all duration-300 ease-in-out transform flex flex-col gap-2 px-4 overflow-hidden shadow-md",
-          isMobileMenuOpen
-            ? "max-h-40 py-2 pointer-events-auto"
-            : "max-h-0 pointer-events-none"
-        )}>
-        <Link to="/">홈</Link>
-        <Separator />
-        <Link to="/upload">업로드</Link>
+      <div>
+        <Button asChild variant="link" className="text-primary-foreground">
+          <Link to="/auth/login">로그인</Link>
+        </Button>
       </div>
-    </>
+    </header>
   );
 }

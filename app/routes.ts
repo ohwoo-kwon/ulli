@@ -11,7 +11,13 @@ export default [
     route("/login", "features/auth/pages/login.tsx"),
     route("/sign-up", "features/auth/pages/sign-up.tsx"),
   ]),
-  route("/upload", "features/upload/pages/upload.tsx"),
+  ...prefix("/images", [
+    route("/", "features/images/pages/images-page.tsx"),
+    route("/upload", "features/images/pages/image-upload-page.tsx"),
+  ]),
+  ...prefix("/advertisements", [
+    route("/", "features/advertisements/pages/advertisements-page.tsx"),
+  ]),
   ...prefix("/api", [
     route("/image/description", "apis/image/description.tsx"),
     route("/image/manipulation", "apis/image/manipulation.tsx"),
