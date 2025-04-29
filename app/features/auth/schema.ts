@@ -1,6 +1,6 @@
 import { pgSchema, timestamp, varchar } from "drizzle-orm/pg-core";
 
-const mySchema = pgSchema("ecobite");
+const mySchema = pgSchema("ulli");
 
 export const usersTable = mySchema.table("users", {
   id: varchar({ length: 30 }).primaryKey(),
