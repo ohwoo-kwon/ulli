@@ -23,7 +23,8 @@ export default function Navigation() {
               className={cn(
                 navigationMenuTriggerStyle(),
                 "bg-primary text-primary-foreground"
-              )}>
+              )}
+            >
               이미지 만들기
             </NavigationMenuLink>
           </NavigationMenuItem>
@@ -33,8 +34,20 @@ export default function Navigation() {
               className={cn(
                 navigationMenuTriggerStyle(),
                 "bg-primary text-primary-foreground"
-              )}>
+              )}
+            >
               내 이미지
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="/items"
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "bg-primary text-primary-foreground"
+              )}
+            >
+              상품
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
@@ -43,7 +56,8 @@ export default function Navigation() {
               className={cn(
                 navigationMenuTriggerStyle(),
                 "bg-primary text-primary-foreground"
-              )}>
+              )}
+            >
               광고
             </NavigationMenuLink>
           </NavigationMenuItem>
