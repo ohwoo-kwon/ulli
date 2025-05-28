@@ -15,6 +15,9 @@ export default [
     route("/", "features/images/pages/images-page.tsx"),
     route("/upload", "features/images/pages/image-upload-page.tsx"),
   ]),
+  ...prefix("/products", [
+    route("/", "features/products/pages/products-page.tsx"),
+  ]),
   ...prefix("/advertisements", [
     route("/", "features/advertisements/pages/advertisements-page.tsx"),
   ]),

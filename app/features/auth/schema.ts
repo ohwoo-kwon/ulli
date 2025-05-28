@@ -1,10 +1,13 @@
-import { pgSchema, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { authUsers } from "drizzle-orm/supabase";
 
-const mySchema = pgSchema("ulli");
-
-export const usersTable = mySchema.table("users", {
-  id: varchar({ length: 30 }).primaryKey(),
+export const profiles = pgTable("profiles", {
+  profileId: uuid("profile_id")
+    .primaryKey()
+    .references(() => authUsers.id, {
+      onDelete: "cascade",
+    }),
   name: varchar({ length: 30 }).notNull(),
   password: varchar({ length: 255 }).notNull(),
-  created_at: timestamp().defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });

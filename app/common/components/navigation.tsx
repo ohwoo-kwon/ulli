@@ -41,7 +41,7 @@ export default function Navigation() {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink
-              href="/items"
+              href="/products"
               className={cn(
                 navigationMenuTriggerStyle(),
                 "bg-primary text-primary-foreground"
@@ -50,7 +50,7 @@ export default function Navigation() {
               상품
             </NavigationMenuLink>
           </NavigationMenuItem>
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <NavigationMenuLink
               href="/advertisements"
               className={cn(
@@ -60,7 +60,7 @@ export default function Navigation() {
             >
               광고
             </NavigationMenuLink>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
       <div>
