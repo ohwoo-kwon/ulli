@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { cn } from "~/lib/utils";
 
 export default function Navigation() {
+  const { pathname } = useLocation();
   return (
     <header className="py-1 px-5 flex justify-between items-center bg-primary">
       <h1 className="text-primary-foreground text-xl font-bold tracking-widest">
@@ -22,7 +23,10 @@ export default function Navigation() {
               href="/images/upload"
               className={cn(
                 navigationMenuTriggerStyle(),
-                "bg-primary text-primary-foreground"
+                "bg-primary text-primary-foreground",
+                pathname === "/images/upload"
+                  ? "bg-accent text-accent-foreground"
+                  : ""
               )}
             >
               이미지 만들기
@@ -33,7 +37,8 @@ export default function Navigation() {
               href="/images"
               className={cn(
                 navigationMenuTriggerStyle(),
-                "bg-primary text-primary-foreground"
+                "bg-primary text-primary-foreground",
+                pathname === "/images" ? "bg-accent text-accent-foreground" : ""
               )}
             >
               내 이미지
@@ -44,7 +49,10 @@ export default function Navigation() {
               href="/products"
               className={cn(
                 navigationMenuTriggerStyle(),
-                "bg-primary text-primary-foreground"
+                "bg-primary text-primary-foreground",
+                pathname === "/products"
+                  ? "bg-accent text-accent-foreground"
+                  : ""
               )}
             >
               상품
