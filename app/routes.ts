@@ -22,7 +22,7 @@ export default [
     route("/", "features/advertisements/pages/advertisements-page.tsx"),
   ]),
   ...prefix("/api", [
-    route("/image/description", "apis/image/description.tsx"),
+    route("/image/generate", "apis/image/image-generate.tsx"),
     route("/image/manipulation", "apis/image/manipulation.tsx"),
   ]),
 ] satisfies RouteConfig;
