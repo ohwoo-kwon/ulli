@@ -11,8 +11,8 @@ export default function AuthCard({ children }: { children: React.ReactNode }) {
     <div className="flex justify-center items-center h-screen">
       <Card className="container max-w-[500px]">
         <CardHeader>
-          <CardTitle className="text-3xl tracking-wide">E.S.G Bite</CardTitle>
-          <CardDescription>AI 기반 스마트 식단 분석 솔루션</CardDescription>
+          <CardTitle className="text-3xl tracking-wide">ULLI</CardTitle>
+          <CardDescription>AI 기반 상품 미리 입어보기</CardDescription>
         </CardHeader>
         {children}
       </Card>
