@@ -8,6 +8,5 @@ export const profiles = pgTable("profiles", {
       onDelete: "cascade",
     }),
   name: varchar({ length: 30 }).notNull(),
-  password: varchar({ length: 255 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
