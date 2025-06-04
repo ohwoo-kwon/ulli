@@ -22,7 +22,7 @@ export default function UploadPage() {
   }, [fetcher.data]);
 
   return (
-    <div className="py-4 min-w-screen min-h-[calc(100vh-44px)] flex flex-col lg:flex-row items-center lg:items-start lg:justify-center gap-10">
+    <div className="py-4 min-w-screen min-h-[calc(100vh-44px)] flex flex-col items-center gap-10">
       <fetcher.Form
         method="post"
         encType="multipart/form-data"
@@ -66,12 +66,16 @@ export default function UploadPage() {
         </div>
       </fetcher.Form>
       {resultImgUrl && (
-        <Card className="w-110">
+        <Card>
           <CardHeader>
             <CardTitle>결과</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <img className="size-96" src={resultImgUrl} alt="결과 이미지" />
+            <img
+              className="min-w-96 size-96 object-contain"
+              src={resultImgUrl}
+              alt="결과 이미지"
+            />
           </CardContent>
         </Card>
       )}
