@@ -39,7 +39,7 @@ export default function UploadPage() {
           <div className="flex flex-col gap-5 items-center lg:flex-row lg:justify-center">
             <Card className="w-80">
               <CardHeader>
-                <CardTitle>상품</CardTitle>
+                <CardTitle>① 상품</CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center">
                 <ImageUpload
@@ -51,7 +51,7 @@ export default function UploadPage() {
             </Card>
             <Card className="w-80">
               <CardHeader>
-                <CardTitle>내 사진</CardTitle>
+                <CardTitle>② 내 사진</CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center">
                 <ImageUpload
@@ -63,7 +63,7 @@ export default function UploadPage() {
             </Card>
             <Card className="w-80">
               <CardHeader>
-                <CardTitle>결과</CardTitle>
+                <CardTitle>③ 결과</CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center">
                 {resultImgUrl ? (
