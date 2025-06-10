@@ -8,8 +8,27 @@ import {
 import { useFetcher } from "react-router";
 import { useEffect, useState } from "react";
 import { Button } from "~/common/components/ui/button";
+import type { Route } from "./+types/hmall";
+import { z } from "zod";
 
-export default function Hmall() {
+const IMAGE_URL = "https://image.hmall.com/";
+
+const searchParamsSchema = z.object({
+  imgUrls: z.string(),
+});
+
+export const loader = ({ request }: Route.LoaderArgs) => {
+  const searchParams = Object.fromEntries(new URL(request.url).searchParams);
+  const {
+    data: searchParamsData,
+    success,
+    error,
+  } = searchParamsSchema.safeParse(searchParams);
+  if (!success) return { fieldErrors: error.flatten().fieldErrors };
+  return { imgUrls: searchParamsData.imgUrls };
+};
+
+export default function Hmall({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
 
   const [myImgPreview, setMyImgPreview] = useState<string | null>(null);
@@ -41,11 +60,16 @@ export default function Hmall() {
                 <CardTitle>① 상품</CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center">
-                <img
-                  className="w-full aspect-square border rounded object-contain"
-                  src="https://image.hmall.com/static/3/8/19/13/2213198369_0.jpg?RS=600x600&AR=0&ao=1&cVer=202502211648&SF=webp"
-                  alt="상품 이미지"
-                />
+                <div className="w-full aspect-square border rounded flex overflow-auto">
+                  {loaderData.imgUrls?.split(",").map((v, i) => (
+                    <img
+                      key={`img_${i}`}
+                      className="object-contain"
+                      src={v}
+                      alt="상품 이미지"
+                    />
+                  ))}
+                </div>
               </CardContent>
             </Card>
             <Card className="w-80">
