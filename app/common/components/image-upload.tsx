@@ -57,7 +57,7 @@ export default function ImageUpload({
 
   return (
     <div
-      className={`border-2 border-dashed border-gray-300 rounded flex items-center justify-center size-96 cursor-pointer bg-gray-50 ${
+      className={`border-2 border-dashed border-gray-300 rounded flex items-center justify-center w-full aspect-square cursor-pointer bg-gray-50 ${
         preview ? "" : "hover:bg-gray-200"
       } transition`}
       onDragLeave={() => {
@@ -66,7 +66,8 @@ export default function ImageUpload({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       onClick={openFileDialog}
-      ref={imageDivRef}>
+      ref={imageDivRef}
+    >
       <input
         type="file"
         accept="image/*"
@@ -96,7 +97,8 @@ export default function ImageUpload({
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2}>
+                strokeWidth={2}
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

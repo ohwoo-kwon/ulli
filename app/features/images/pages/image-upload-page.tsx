@@ -21,63 +21,82 @@ export default function UploadPage() {
     }
   }, [fetcher.data]);
 
+  const handleReset = () => {
+    setItemPreview(null);
+    setMyImgPreview(null);
+    setResultImgUrl("");
+  };
+
   return (
-    <div className="py-4 min-w-screen min-h-[calc(100vh-44px)] flex flex-col items-center gap-10">
-      <fetcher.Form
-        method="post"
-        encType="multipart/form-data"
-        action="/api/image/generate"
-        className="flex flex-col items-center justify-center gap-10"
-      >
-        <div className="flex flex-col gap-5 items-center lg:flex-row lg:justify-center">
-          <Card className="w-110">
-            <CardHeader>
-              <CardTitle>상품</CardTitle>
-            </CardHeader>
-            <CardContent className="flex justify-center">
-              <ImageUpload
-                name="itemImg"
-                preview={itemPreview}
-                setPreview={setItemPreview}
-              />
-            </CardContent>
-          </Card>
-          <Card className="w-110">
-            <CardHeader>
-              <CardTitle>내 사진</CardTitle>
-            </CardHeader>
-            <CardContent className="flex justify-center">
-              <ImageUpload
-                name="myImg"
-                preview={myImgPreview}
-                setPreview={setMyImgPreview}
-              />
-            </CardContent>
-          </Card>
-        </div>
-        <div className="flex flex-col items-center">
-          <Button
-            className="w-110 lg:w-225"
-            type="submit"
-            disabled={!Boolean(itemPreview && myImgPreview)}
-          >
-            생성
-          </Button>
-        </div>
-      </fetcher.Form>
+    <div className="flex flex-col items-center">
+      <div className="py-4 flex flex-col items-center lg:flex-row lg:justify-center lg:items-start gap-5">
+        <fetcher.Form
+          method="post"
+          encType="multipart/form-data"
+          action="/api/image/generate"
+          className="flex flex-col items-center gap-5"
+        >
+          <div className="flex flex-col gap-5 items-center lg:flex-row lg:justify-center">
+            <Card className="w-80">
+              <CardHeader>
+                <CardTitle>상품</CardTitle>
+              </CardHeader>
+              <CardContent className="flex justify-center">
+                <ImageUpload
+                  name="itemImg"
+                  preview={itemPreview}
+                  setPreview={setItemPreview}
+                />
+              </CardContent>
+            </Card>
+            <Card className="w-80">
+              <CardHeader>
+                <CardTitle>내 사진</CardTitle>
+              </CardHeader>
+              <CardContent className="flex justify-center">
+                <ImageUpload
+                  name="myImg"
+                  preview={myImgPreview}
+                  setPreview={setMyImgPreview}
+                />
+              </CardContent>
+            </Card>
+            <Card className="w-80">
+              <CardHeader>
+                <CardTitle>결과</CardTitle>
+              </CardHeader>
+              <CardContent className="flex justify-center">
+                {resultImgUrl ? (
+                  <img
+                    className="w-full aspect-square border rounded object-contain"
+                    src={resultImgUrl}
+                    alt="결과 이미지"
+                  />
+                ) : (
+                  <div className="w-full aspect-square border rounded flex items-center justify-center text-muted-foreground">
+                    결과 이미지
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+          {!resultImgUrl && (
+            <div className="flex flex-col items-center">
+              <Button
+                className="w-80"
+                type="submit"
+                disabled={!Boolean(itemPreview && myImgPreview)}
+              >
+                생성
+              </Button>
+            </div>
+          )}
+        </fetcher.Form>
+      </div>
       {resultImgUrl && (
-        <Card>
-          <CardHeader>
-            <CardTitle>결과</CardTitle>
-          </CardHeader>
-          <CardContent className="flex justify-center">
-            <img
-              className="min-w-96 size-96 object-contain"
-              src={resultImgUrl}
-              alt="결과 이미지"
-            />
-          </CardContent>
-        </Card>
+        <Button className="w-80" onClick={handleReset}>
+          되돌리기
+        </Button>
       )}
     </div>
   );
