@@ -31,10 +31,10 @@ export default function Navigation() {
                       : ""
                   )}
                 >
-                  이미지 만들기
+                  AI 피팅
                 </NavigationMenuLink>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <NavigationMenuLink
                   href="/images"
                   className={cn(
@@ -47,7 +47,7 @@ export default function Navigation() {
                 >
                   내 이미지
                 </NavigationMenuLink>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
               <NavigationMenuItem>
                 <NavigationMenuLink
                   href="/products"
@@ -76,9 +76,9 @@ export default function Navigation() {
             </NavigationMenuList>
           </NavigationMenu>
           <div>
-            <Button asChild variant="link" className="text-primary-foreground">
+            {/* <Button asChild variant="link" className="text-primary-foreground">
               <Link to="/auth/login">로그인</Link>
-            </Button>
+            </Button> */}
           </div>
         </>
       )}

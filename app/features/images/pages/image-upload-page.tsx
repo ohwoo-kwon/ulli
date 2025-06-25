@@ -7,13 +7,36 @@ import {
   CardTitle,
 } from "~/common/components/ui/card";
 import { useEffect, useState } from "react";
-import { useFetcher } from "react-router";
+import { data, useFetcher } from "react-router";
+import { RotateCwIcon } from "lucide-react";
+import type { Route } from "./+types/image-upload-page";
+import { z } from "zod";
 
-export default function UploadPage() {
+const searchParamsSchema = z.object({
+  imgUrl: z.string().optional(),
+});
+
+export const loader = ({ request }: Route.LoaderArgs) => {
+  const searchParams = new URL(request.url).searchParams;
+
+  const {
+    data: searchParamsData,
+    success,
+    error,
+  } = searchParamsSchema.safeParse(Object.fromEntries(searchParams));
+
+  if (!success)
+    throw data({ error: error.flatten().fieldErrors.imgUrl }, { status: 400 });
+
+  return { imgUrl: searchParamsData.imgUrl || null };
+};
+
+export default function UploadPage({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
   const [itemPreview, setItemPreview] = useState<string | null>(null);
   const [myImgPreview, setMyImgPreview] = useState<string | null>(null);
   const [resultImgUrl, setResultImgUrl] = useState("");
+  const isLoading = fetcher.state === "submitting";
 
   useEffect(() => {
     if (fetcher.data?.imageUrl) {
@@ -44,7 +67,7 @@ export default function UploadPage() {
               <CardContent className="flex justify-center">
                 <ImageUpload
                   name="itemImg"
-                  preview={itemPreview}
+                  preview={itemPreview || loaderData.imgUrl}
                   setPreview={setItemPreview}
                 />
               </CardContent>
@@ -80,24 +103,22 @@ export default function UploadPage() {
               </CardContent>
             </Card>
           </div>
-          {!resultImgUrl && (
-            <div className="flex flex-col items-center">
-              <Button
-                className="w-80"
-                type="submit"
-                disabled={!Boolean(itemPreview && myImgPreview)}
-              >
-                생성
-              </Button>
-            </div>
-          )}
+          <div className="flex flex-col items-center">
+            <Button
+              className="w-80"
+              type="submit"
+              disabled={!Boolean(itemPreview && myImgPreview) || isLoading}
+            >
+              {isLoading ? <RotateCwIcon className="animate-spin" /> : "생성"}
+            </Button>
+          </div>
         </fetcher.Form>
       </div>
-      {resultImgUrl && (
+      {/* {resultImgUrl && (
         <Button className="w-80" onClick={handleReset}>
           되돌리기
         </Button>
-      )}
+      )} */}
     </div>
   );
 }

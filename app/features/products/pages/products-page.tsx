@@ -1,3 +1,4 @@
+import { Link, redirect } from "react-router";
 import { Button } from "~/common/components/ui/button";
 
 export default function ProductsPage() {
@@ -8,7 +9,6 @@ export default function ProductsPage() {
     "https://image.hmall.com/static/5/8/12/29/2229128528_0.jpg",
     "https://image.hmall.com/static/1/9/68/48/2148689113_0.png",
     "https://image.hmall.com/static/3/4/78/26/2226784389_0.jpg",
-    "https://image.hmall.com/static/7/5/26/08/2208265794_0.jpg",
     "https://image.hmall.com/static/9/3/69/55/2155693983_1.jpg",
     "https://image.hmall.com/static/4/4/41/26/2226414474_1.jpg",
     "https://image.hmall.com/static/4/4/41/26/2226414474_2.jpg",
@@ -22,8 +22,11 @@ export default function ProductsPage() {
           className="relative overflow-hidden rounded-xl shadow-lg max-size-96"
         >
           <img src={src} className="peer size-96 object-cover" />
-          <Button className="absolute bottom-2 left-1/2 -translate-x-1/2 transition-all duration-500 opacity-0 translate-y-10 hover:translate-y-0 hover:opacity-100 peer-hover:translate-y-0 peer-hover:opacity-100">
-            입어보기
+          <Button
+            className="absolute bottom-2 left-1/2 -translate-x-1/2 transition-all duration-500 opacity-0 translate-y-10 hover:translate-y-0 hover:opacity-100 peer-hover:translate-y-0 peer-hover:opacity-100"
+            asChild
+          >
+            <Link to={`/images/upload?imgUrl=${src}`}>입어보기</Link>
           </Button>
         </div>
       ))}

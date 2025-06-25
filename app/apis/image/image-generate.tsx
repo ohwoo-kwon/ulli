@@ -2,33 +2,13 @@ import { z } from "zod";
 import type { Route } from "./+types/image-generate";
 import { data } from "react-router";
 import OpenAI from "openai";
-import fs from "fs";
-import path from "path";
-
-// const openai = new OpenAI({
-//   apiKey: process.env.OPEN_AI_API_KEY || "",
-//   baseURL: "https://api.openai.com/v1",
-// });
+import Replicate from "replicate";
+import { fileToBase64, streamToBase64 } from "~/lib/utils";
 
 const formSchema = z.object({
   itemImg: z.instanceof(File),
   myImg: z.instanceof(File),
 });
-
-async function fileToBase64(file: File): Promise<string> {
-  const buffer = Buffer.from(await file.arrayBuffer());
-  return buffer.toString("base64");
-}
-
-// async function createOpenAIFile(file: File) {
-//   const buffer = Buffer.from(await file.arrayBuffer());
-//   const stream = Readable.from(buffer);
-//   const result = await openai.files.create({
-//     file: stream,
-//     purpose: "vision",
-//   });
-//   return result.id;
-// }
 
 export const action = async ({ request }: Route.ActionArgs) => {
   if (request.method !== "POST") return data({ status: 404 });
@@ -42,68 +22,77 @@ export const action = async ({ request }: Route.ActionArgs) => {
   if (!success)
     return data({ status: 401 }, { statusText: "잘못된 요청입니다." });
 
-  const { itemImg, myImg } = validFormData!;
+  const replicate = new Replicate();
+  const openai = new OpenAI({ apiKey: process.env.OPEN_AI_API_KEY });
 
-  const base64ItemImg = await fileToBase64(itemImg);
-  const base64MyImg = await fileToBase64(myImg);
+  const itemImgBuffer = await fileToBase64(validFormData.itemImg);
+  const myImgBuffer = await fileToBase64(validFormData.myImg);
 
-  const prompt = `Generate a photorealistic image of a gift basket on a white background
-  labeled 'Relax & Unwind' with a ribbon and handwriting-like font,
-  containing all the items in the reference pictures.`;
+  // openai 를 통해 상품 이미지와 인물 이미지 해석
+  const [itemImgRes, myImgRes] = await Promise.all([
+    openai.responses.create({
+      model: "gpt-4.1-nano",
+      input: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: "Describe about the cloth. Output must be start with 'The cloth is' and just decribe about the cloth.",
+            },
+            {
+              type: "input_image",
+              image_url: `data:${validFormData.itemImg.type};base64,${itemImgBuffer}`,
+              detail: "high",
+            },
+          ],
+        },
+      ],
+    }),
+    openai.responses.create({
+      model: "gpt-4.1-nano",
+      input: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: "Describe about the person. Output must be start with 'The person is' and just decribe about the person and background.",
+            },
+            {
+              type: "input_image",
+              image_url: `data:${validFormData.myImg.type};base64,${myImgBuffer}`,
+              detail: "high",
+            },
+          ],
+        },
+      ],
+    }),
+  ]);
 
-  return {
-    imageUrl: "/result.png",
+  if (itemImgRes.error || myImgRes.error)
+    return data(
+      { error: itemImgRes.error?.message || myImgRes.error?.message },
+      { status: 400 }
+    );
+
+  // replicate 를 통해서 결과 이미지 생성
+  const input = {
+    prompt: `Me: ${myImgRes.output_text}
+      Fitting cloth: ${itemImgRes.output_text}
+      Make me wears the Fitting cloth. I want to take off my cloth and change the cloth to the garment. Keep everything same in my image except my cloth. Change my cloth only.`,
+    aspect_ratio: "3:4",
+    input_images: [
+      `data:${validFormData.itemImg.type};base64,${itemImgBuffer}`,
+      `data:${validFormData.myImg.type};base64,${myImgBuffer}`,
+    ],
   };
 
-  // const response = await openai.responses.create({
-  //   model: "gpt-4.1",
-  //   input: [
-  //     {
-  //       role: "user",
-  //       content: [
-  //         { type: "input_text", text: prompt },
-  //         {
-  //           type: "input_image",
-  //           image_url: `data:image/jpeg;base64,${base64ItemImg}`,
-  //           detail: "low",
-  //         },
-  //         {
-  //           type: "input_image",
-  //           image_url: `data:image/jpeg;base64,${base64MyImg}`,
-  //           detail: "low",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   tools: [
-  //     {
-  //       type: "image_generation",
-  //       quality: "low",
-  //       model: "gpt-image-1",
-  //       size: "1024x1024",
-  //       output_format: "png",
-  //     },
-  //   ],
-  // });
+  const output = await replicate.run("flux-kontext-apps/multi-image-list", {
+    input,
+  });
 
-  // const imageData = response.output
-  //   .filter((output) => output.type === "image_generation_call")
-  //   .map((output) => output.result);
-  // console.log(imageData);
+  const imageUrl = await streamToBase64(output as ReadableStream);
 
-  // if (imageData.length > 0) {
-  //   const imageBase64 = imageData[0];
-  //   const buffer = Buffer.from(imageBase64!, "base64");
-  //   const imgName = `${myImg.name}_${new Date()}`;
-
-  //   const outPath = path.resolve(`public/generated/${imgName}.png`);
-  //   fs.writeFileSync(outPath, buffer);
-
-  //   return data({ imageUrl: `/generated/${imgName}.png` });
-  // } else {
-  //   return data(
-  //     { error: "No image generated", output: response.output },
-  //     { status: 500 }
-  //   );
-  // }
+  return { imageUrl: `data:img/png;base64,${imageUrl}` };
 };
