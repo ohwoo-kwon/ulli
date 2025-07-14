@@ -17,7 +17,12 @@ export default function ImageUpload({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreview(null);
     const file = event.target.files?.[0];
+
+    console.log("✅ 모바일 파일 선택됨:", file);
+    console.log("✅ input.files 상태:", event.target.files);
+
     if (file) {
+      console.warn("❗ 파일이 실제로 선택되지 않았습니다.");
       if (file.size > MAX_FILE_SIZE) {
         setError("파일 크기는 10MB를 초과할 수 없습니다.");
         return;
