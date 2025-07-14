@@ -78,12 +78,12 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   // replicate 를 통해서 결과 이미지 생성
   const input = {
-    prompt: `The @person wearing the @cloth. Keep @person pose and background.`,
+    prompt: `the @person wearing the @cloth. keep @person 's pose and background.`,
     aspect_ratio: "3:4",
-    reference_tags: ["cloth", "person"],
-    input_images: [
-      `data:${validFormData.itemImg.type};base64,${itemImgBuffer}`,
+    reference_tags: ["person", "cloth"],
+    reference_images: [
       `data:${validFormData.myImg.type};base64,${myImgBuffer}`,
+      `data:${validFormData.itemImg.type};base64,${itemImgBuffer}`,
     ],
   };
 
