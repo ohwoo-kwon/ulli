@@ -19,6 +19,10 @@ export const action = async ({ request }: Route.ActionArgs) => {
     success,
     error,
   } = formSchema.safeParse(Object.fromEntries(formData));
+  console.log(formData);
+  console.log(success);
+  console.log(error);
+  console.log(validFormData);
   if (!success)
     return data({ status: 401 }, { statusText: "잘못된 요청입니다." });
 
