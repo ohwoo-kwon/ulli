@@ -6,7 +6,8 @@ import Replicate from "replicate";
 import { fileToBase64, streamToBase64 } from "~/lib/utils";
 
 const formSchema = z.object({
-  itemImg: z.instanceof(File),
+  clothImgUrl: z.string().optional(),
+  itemImg: z.instanceof(File).optional(),
   myImg: z.instanceof(File),
 });
 
@@ -19,18 +20,14 @@ export const action = async ({ request }: Route.ActionArgs) => {
     success,
     error,
   } = formSchema.safeParse(Object.fromEntries(formData));
-  console.log(formData);
-  console.log(success);
-  console.log(error);
-  console.log(validFormData);
   if (!success)
     return data({ status: 401 }, { statusText: "잘못된 요청입니다." });
 
   const replicate = new Replicate();
   // const openai = new OpenAI({ apiKey: process.env.OPEN_AI_API_KEY });
 
-  const itemImgBuffer = await fileToBase64(validFormData.itemImg);
   const myImgBuffer = await fileToBase64(validFormData.myImg);
+  let imageUrl = "";
 
   // openai 를 통해 상품 이미지와 인물 이미지 해석
   // const [itemImgRes, myImgRes] = await Promise.all([
@@ -79,23 +76,45 @@ export const action = async ({ request }: Route.ActionArgs) => {
   //     { error: itemImgRes.error?.message || myImgRes.error?.message },
   //     { status: 400 }
   // );
+  if (validFormData.itemImg) {
+    const itemImgBuffer = await fileToBase64(validFormData.itemImg);
 
-  // replicate 를 통해서 결과 이미지 생성
-  const input = {
-    prompt: `the @person wearing the @cloth. keep @person 's pose and background.`,
-    aspect_ratio: "3:4",
-    reference_tags: ["person", "cloth"],
-    reference_images: [
-      `data:${validFormData.myImg.type};base64,${myImgBuffer}`,
-      `data:${validFormData.itemImg.type};base64,${itemImgBuffer}`,
-    ],
-  };
+    // replicate 를 통해서 결과 이미지 생성
+    const input = {
+      prompt: `the @person wearing the @cloth. keep @person 's pose and background.`,
+      aspect_ratio: "3:4",
+      reference_tags: ["person", "cloth"],
+      reference_images: [
+        `data:${validFormData.myImg.type};base64,${myImgBuffer}`,
+        `data:${validFormData.itemImg.type};base64,${itemImgBuffer}`,
+      ],
+    };
 
-  const output = await replicate.run("runwayml/gen4-image", {
-    input,
-  });
+    const output = await replicate.run("runwayml/gen4-image", {
+      input,
+    });
 
-  const imageUrl = await streamToBase64(output as ReadableStream);
+    imageUrl = await streamToBase64(output as ReadableStream);
+  }
+
+  if (validFormData.clothImgUrl) {
+    // replicate 를 통해서 결과 이미지 생성
+    const input = {
+      prompt: `the @person wearing the @cloth. keep @person 's pose and background.`,
+      aspect_ratio: "3:4",
+      reference_tags: ["person", "cloth"],
+      reference_images: [
+        `data:${validFormData.myImg.type};base64,${myImgBuffer}`,
+        validFormData.clothImgUrl,
+      ],
+    };
+
+    const output = await replicate.run("runwayml/gen4-image", {
+      input,
+    });
+
+    imageUrl = await streamToBase64(output as ReadableStream);
+  }
 
   return { imageUrl: `data:img/png;base64,${imageUrl}` };
 };

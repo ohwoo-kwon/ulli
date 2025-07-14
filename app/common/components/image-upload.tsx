@@ -1,13 +1,21 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 
 export default function ImageUpload({
   name,
   preview,
   setPreview,
+  imgUrl,
 }: {
   name: string;
   preview: string | null;
   setPreview: Dispatch<SetStateAction<string | null>>;
+  imgUrl?: string;
 }) {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -17,12 +25,7 @@ export default function ImageUpload({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreview(null);
     const file = event.target.files?.[0];
-
-    console.log("✅ 모바일 파일 선택됨:", file);
-    console.log("✅ input.files 상태:", event.target.files);
-
     if (file) {
-      console.warn("❗ 파일이 실제로 선택되지 않았습니다.");
       if (file.size > MAX_FILE_SIZE) {
         setError("파일 크기는 10MB를 초과할 수 없습니다.");
         return;
@@ -60,6 +63,10 @@ export default function ImageUpload({
     fileInputRef.current?.click();
   };
 
+  useEffect(() => {
+    if (imgUrl) setPreview(imgUrl);
+  }, []);
+
   return (
     <div
       className={`border-2 border-dashed border-gray-300 rounded flex items-center justify-center w-full aspect-square cursor-pointer bg-gray-50 ${
@@ -73,14 +80,18 @@ export default function ImageUpload({
       onClick={openFileDialog}
       ref={imageDivRef}
     >
-      <input
-        type="file"
-        accept="image/*"
-        className="hidden"
-        name={name}
-        ref={fileInputRef}
-        onChange={handleFileChange}
-      />
+      {imgUrl ? (
+        <input className="hidden" name="clothImgUrl" defaultValue={imgUrl} />
+      ) : (
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          name={name}
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
+      )}
 
       {preview ? (
         <div className="relative w-full h-full">

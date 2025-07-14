@@ -67,8 +67,9 @@ export default function UploadPage({ loaderData }: Route.ComponentProps) {
               <CardContent className="flex justify-center">
                 <ImageUpload
                   name="itemImg"
-                  preview={itemPreview || loaderData.imgUrl}
+                  preview={itemPreview}
                   setPreview={setItemPreview}
+                  imgUrl={loaderData.imgUrl || undefined}
                 />
               </CardContent>
             </Card>
