@@ -11,10 +11,24 @@ import { data, useFetcher } from "react-router";
 import { RotateCwIcon } from "lucide-react";
 import type { Route } from "./+types/image-upload-page";
 import { z } from "zod";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "~/common/components/ui/carousel";
 
 const searchParamsSchema = z.object({
   imgUrl: z.string().optional(),
 });
+
+export const action = async ({ request }: Route.ActionArgs) => {
+  const formData = await request.formData();
+  const imgUrls = formData.getAll("imgUrls") as string[];
+  return { imgUrls };
+};
 
 export const loader = ({ request }: Route.LoaderArgs) => {
   const searchParams = new URL(request.url).searchParams;
@@ -31,11 +45,16 @@ export const loader = ({ request }: Route.LoaderArgs) => {
   return { imgUrl: searchParamsData.imgUrl || null };
 };
 
-export default function UploadPage({ loaderData }: Route.ComponentProps) {
+export default function UploadPage({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const fetcher = useFetcher();
   const [itemPreview, setItemPreview] = useState<string | null>(null);
   const [myImgPreview, setMyImgPreview] = useState<string | null>(null);
   const [resultImgUrl, setResultImgUrl] = useState("");
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
   const isLoading = fetcher.state === "submitting";
 
   useEffect(() => {
@@ -44,11 +63,29 @@ export default function UploadPage({ loaderData }: Route.ComponentProps) {
     }
   }, [fetcher.data]);
 
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrent(api.selectedScrollSnap());
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  useEffect(() => {
+    if (!actionData || !actionData.imgUrls) return;
+    setItemPreview(actionData.imgUrls[current]);
+  }, [current]);
+
   const handleReset = () => {
     setItemPreview(null);
     setMyImgPreview(null);
     setResultImgUrl("");
   };
+
+  console.log(itemPreview);
 
   return (
     <div className="flex flex-col items-center">
@@ -65,12 +102,31 @@ export default function UploadPage({ loaderData }: Route.ComponentProps) {
                 <CardTitle>① 상품</CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center">
-                <ImageUpload
-                  name="itemImg"
-                  preview={itemPreview}
-                  setPreview={setItemPreview}
-                  imgUrl={loaderData.imgUrl || undefined}
-                />
+                {actionData?.imgUrls ? (
+                  <Carousel setApi={setApi} className="w-full max-w-xs">
+                    <CarouselContent>
+                      <input
+                        className="hidden"
+                        name="clothImgUrl"
+                        defaultValue={itemPreview || ""}
+                      />
+                      {actionData.imgUrls.map((imgUrl, index) => (
+                        <CarouselItem key={index}>
+                          <img src={imgUrl} />
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                ) : (
+                  <ImageUpload
+                    name="itemImg"
+                    preview={itemPreview}
+                    setPreview={setItemPreview}
+                    imgUrl={loaderData.imgUrl || undefined}
+                  />
+                )}
               </CardContent>
             </Card>
             <Card className="w-80">
