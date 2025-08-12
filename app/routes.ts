@@ -25,5 +25,4 @@ export default [
     route("/image/generate", "apis/image/image-generate.tsx"),
     route("/image/manipulation", "apis/image/manipulation.tsx"),
   ]),
-  route("/hmall", "features/hmall/pages/hmall.tsx")
 ] satisfies RouteConfig;

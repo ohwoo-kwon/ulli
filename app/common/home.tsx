@@ -19,24 +19,6 @@ export default function Home() {
 
   return (
     <div>
-      <form action="/images/upload" method="POST">
-        <input
-          type="hidden"
-          defaultValue="https://image.hmall.com/static/3/8/19/13/2213198396_0.jpg"
-          name="imgUrls"
-        />
-        <input
-          type="hidden"
-          defaultValue="https://image.hmall.com/static/3/8/19/13/2213198369_0.jpg"
-          name="imgUrls"
-        />
-        <input
-          type="hidden"
-          defaultValue="https://image.hmall.com/static/2/4/84/07/2207844270_0.jpg"
-          name="imgUrls"
-        />
-        <button type="submit">이동</button>
-      </form>
       <div className="relative w-full overflow-hidden">
         <svg
           className="absolute inset-0 w-full"

@@ -85,8 +85,6 @@ export default function UploadPage({
     setResultImgUrl("");
   };
 
-  console.log(itemPreview);
-
   return (
     <div className="flex flex-col items-center">
       <div className="py-4 flex flex-col items-center lg:flex-row lg:justify-center lg:items-start gap-5">
@@ -96,7 +94,8 @@ export default function UploadPage({
           action="/api/image/generate"
           className="flex flex-col items-center gap-5"
         >
-          <div className="flex flex-col gap-5 items-center lg:flex-row lg:justify-center">
+          <div className="flex flex-col gap-5 lg:flex-row lg:justify-center">
+            <div className="flex flex-col gap-2">
             <Card className="w-80">
               <CardHeader>
                 <CardTitle>① 상품</CardTitle>
@@ -129,6 +128,18 @@ export default function UploadPage({
                 )}
               </CardContent>
             </Card>
+            <Card className="w-80 bg-blue-100">
+              <CardHeader className="text-sm">
+                <h3 className="font-semibold mb-2">👗 상품 사진 선택 가이드</h3>
+                <ul className="ml-4">
+                  <li>1️⃣ 모델 착용 컷보다 → 상품 단독 사진이 더 정확해요.</li>
+                  <li>2️⃣ 여러 개보다 하나 → 한 개의 상품만 있는 사진을 골라주세요.</li>
+                  <li>3️⃣ 배경은 미니멀하게 → 깔끔한 배경이 인식률을 높여줘요.</li>
+                </ul>
+              </CardHeader>
+            </Card>
+            </div>
+            <div className="flex flex-col gap-2">
             <Card className="w-80">
               <CardHeader>
                 <CardTitle>② 내 사진</CardTitle>
@@ -141,6 +152,20 @@ export default function UploadPage({
                 />
               </CardContent>
             </Card>
+            <Card className="w-80 bg-blue-100">
+              <CardHeader className="text-sm">
+                <h3 className="font-semibold mb-2">🚹 인물 사진 선택 가이드</h3>
+                <ul className="ml-4">
+                  <li>1️⃣ 인물 중심으로 → 전신보다 상반신·얼굴 중심이 좋아요.</li>
+                  <li>2️⃣ 이목구비 또렷하게 → 안경·선글라스 없이, 얼굴이 잘 보이게!</li>
+                  <li>3️⃣ 조명은 밝고 균일하게 → 단순한 배경에서 촬영하면 인식률 UP.</li>
+                  <li>4️⃣ 선명함 필수 → 흐린 사진·저화질은 결과가 나빠요.</li>
+                </ul>
+              </CardHeader>
+            </Card>
+            </div>
+            <div className="flex flex-col gap-2">
+
             <Card className="w-80">
               <CardHeader>
                 <CardTitle>③ 결과</CardTitle>
@@ -159,6 +184,13 @@ export default function UploadPage({
                 )}
               </CardContent>
             </Card>
+            <Card className="w-80 bg-yellow-100">
+              <CardHeader className="text-sm">
+                <p>⚠️ 결과 이미지는 AI를 활용해 생성된 이미지로, 실제 인물이 해당 의상을 착용한 모습과는 차이가 있을 수 있습니다. 착용 이미지는 참고용으로만 사용해 주세요.</p>
+                <p>⏰ 이미지 생성에 약 30초가 소요됩니다.</p>
+              </CardHeader>
+            </Card>
+            </div>
           </div>
           <div className="flex flex-col items-center">
             <Button
