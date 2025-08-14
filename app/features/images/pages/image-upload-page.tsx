@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "~/common/components/ui/card";
 import { useEffect, useState } from "react";
-import { data, useFetcher } from "react-router";
+import { data, Link, useFetcher } from "react-router";
 import { RotateCwIcon } from "lucide-react";
 import type { Route } from "./+types/image-upload-page";
 import { z } from "zod";
@@ -203,6 +203,15 @@ export default function UploadPage({
           </div>
         </fetcher.Form>
       </div>
+      <Button
+        className="w-80 mb-4"
+        variant='secondary'
+        asChild
+      >
+        <Link to="https://naver.me/FK0xDjfb" target="_blank">
+          설문
+        </Link>
+      </Button>
       {/* {resultImgUrl && (
         <Button className="w-80" onClick={handleReset}>
           되돌리기
