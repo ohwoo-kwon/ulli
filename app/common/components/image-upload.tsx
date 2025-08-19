@@ -20,7 +20,7 @@ export default function ImageUpload({
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const imageDivRef = useRef<HTMLDivElement | null>(null);
-  const MAX_FILE_SIZE = 5000 * 1024; // 10MB 제한
+  const MAX_FILE_SIZE = 10000 * 1024; // 10MB 제한
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreview(null);
