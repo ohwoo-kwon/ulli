@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -8,15 +8,21 @@ import {
 } from "./ui/navigation-menu";
 import { Button } from "./ui/button";
 import { cn } from "~/lib/utils";
+import { ArrowLeftIcon } from "lucide-react";
 
 export default function Navigation() {
-  const { pathname } = useLocation();
+  const {pathname} = useLocation()
+  const navigate = useNavigate()
+  const onClickBack = () => {
+    navigate(-1)
+  }
   return (
     <header className="py-1 px-5 flex justify-between items-center bg-primary">
-      <h1 className="text-primary-foreground text-xl font-bold tracking-widest">
-        {/* {pathname !== "/hmall" ? <Link to="/">ULLI</Link> : "ULLI"} */}
+      <Button size='icon' onClick={onClickBack}><ArrowLeftIcon /></Button>
+      {/* <h1 className="text-primary-foreground text-xl font-bold tracking-widest">
+        {pathname !== "/hmall" ? <Link to="/">ULLI</Link> : "ULLI"}
         ULLI
-      </h1>
+      </h1> */}
       {//pathname !== "/hmall" && (
         // <>
         //   <NavigationMenu>

@@ -55,6 +55,8 @@ export default function UploadPage({
   const [resultImgUrl, setResultImgUrl] = useState("");
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
   const isLoading = fetcher.state === "submitting";
 
   useEffect(() => {
@@ -176,6 +178,7 @@ export default function UploadPage({
                     className="w-full aspect-square border rounded object-contain"
                     src={resultImgUrl}
                     alt="결과 이미지"
+                    onClick={() => setIsOpen(true)}
                   />
                 ) : (
                   <div className="w-full aspect-square border rounded flex items-center justify-center text-muted-foreground">
@@ -192,7 +195,7 @@ export default function UploadPage({
             </Card>
             </div>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col gap-1 items-center">
             <Button
               className="w-80"
               type="submit"
@@ -200,6 +203,7 @@ export default function UploadPage({
             >
               {isLoading ? <RotateCwIcon className="animate-spin" /> : "생성"}
             </Button>
+            {fetcher.data && 'error' in fetcher.data && <span className="text-red-500 text-xs text-center w-80">{fetcher.data.error === 'fetch failed' ? '이미지 생성에 실패했습니다. 가이드에 맞추어 다시 시도해주세요.' : fetcher.data.error}</span>}
           </div>
         </fetcher.Form>
       </div>
@@ -217,6 +221,18 @@ export default function UploadPage({
           되돌리기
         </Button>
       )} */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+          onClick={() => setIsOpen(false)}
+        >
+          <img
+            src='결과이미지 확대'
+            alt={resultImgUrl}
+            className="max-h-[90%] max-w-[90%] rounded-lg shadow-lg"
+          />
+        </div>
+      )}
     </div>
   );
 }
