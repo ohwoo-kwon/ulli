@@ -32,7 +32,62 @@ export default function ImageUpload({
       }
 
       setError(null);
-      setPreview(URL.createObjectURL(file));
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const targetRatio = 4 / 5; // 가로:세로 비율
+          const width = img.width;
+          const height = img.height;
+          const currentRatio = width / height;
+
+          let cropWidth: number,
+            cropHeight: number,
+            offsetX: number,
+            offsetY: number;
+
+          if (currentRatio > targetRatio) {
+            // 가로가 더 긴 경우 → 가로 잘라내기
+            cropHeight = height;
+            cropWidth = height * targetRatio;
+            offsetX = (width - cropWidth) / 2;
+            offsetY = 0;
+          } else {
+            // 세로가 더 긴 경우 → 세로 잘라내기
+            cropWidth = width;
+            cropHeight = width / targetRatio;
+            offsetX = 0;
+            offsetY = 0;
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = cropWidth;
+          canvas.height = cropHeight;
+          const ctx = canvas.getContext("2d");
+
+          if (ctx) {
+            ctx.drawImage(
+              img,
+              offsetX,
+              offsetY,
+              cropWidth,
+              cropHeight,
+              0,
+              0,
+              cropWidth,
+              cropHeight
+            );
+            const croppedDataUrl = canvas.toDataURL("image/jpeg");
+            setPreview(croppedDataUrl);
+          }
+        };
+        if (e.target?.result) {
+          img.src = e.target.result as string;
+        }
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
