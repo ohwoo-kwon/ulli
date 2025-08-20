@@ -53,7 +53,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     if (validFormData.clothImgUrl) {
       // replicate 를 통해서 결과 이미지 생성
       const input = {
-        prompt: `the @person wearing the @cloth. keep @person 's pose and background.`,
+        prompt: `the @person wearing the @cloth. keep @person 's pose and background. Do not generate any sexual or suggestive content. No underwear-only or shirtless images allowed.`,
         aspect_ratio: "3:4",
         reference_tags: ["person", "cloth"],
         reference_images: [
