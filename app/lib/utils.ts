@@ -5,11 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function fileToBase64(file: File): Promise<string> {
-  const buffer = Buffer.from(await file.arrayBuffer());
-  return buffer.toString("base64");
-}
-
 export async function streamToBase64(stream: ReadableStream) {
   const response = new Response(stream);
   const blob = await response.blob();
@@ -93,5 +88,14 @@ export async function cropImageFileToFourFive(file: File): Promise<File> {
 
     img.onerror = reject;
     img.src = dataUrl;
+  });
+}
+
+export async function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
