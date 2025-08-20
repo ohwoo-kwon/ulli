@@ -24,7 +24,7 @@ export async function streamToBase64(stream: ReadableStream) {
 }
 
 export async function cropImageFileToFourFive(file: File): Promise<File> {
-  const dataUrl = await fileToBase64(file);
+  const dataUrl = await fileToBase64Client(file);
 
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -93,5 +93,14 @@ export async function cropImageFileToFourFive(file: File): Promise<File> {
 
     img.onerror = reject;
     img.src = dataUrl;
+  });
+}
+
+async function fileToBase64Client(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
