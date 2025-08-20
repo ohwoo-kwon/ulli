@@ -5,6 +5,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
+import { cropImageFileToFourFive } from "~/lib/utils";
 
 export default function ImageUpload({
   name,
@@ -22,7 +23,9 @@ export default function ImageUpload({
   const imageDivRef = useRef<HTMLDivElement | null>(null);
   const MAX_FILE_SIZE = 10000 * 1024; // 10MB 제한
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setPreview(null);
     const file = event.target.files?.[0];
     if (file) {
@@ -87,7 +90,8 @@ export default function ImageUpload({
         }
       };
 
-      reader.readAsDataURL(file);
+      const croppedFile = await cropImageFileToFourFive(file);
+      reader.readAsDataURL(croppedFile);
     }
   };
 
