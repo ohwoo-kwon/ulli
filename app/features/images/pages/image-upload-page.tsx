@@ -19,6 +19,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "~/common/components/ui/carousel";
+import { Dialog, DialogContent, DialogTrigger } from "~/common/components/ui/dialog";
 
 const searchParamsSchema = z.object({
   imgUrl: z.string().optional(),
@@ -55,7 +56,6 @@ export default function UploadPage({
   const [resultImgUrl, setResultImgUrl] = useState("");
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
 
   const isLoading = fetcher.state === "submitting";
 
@@ -174,12 +174,22 @@ export default function UploadPage({
               </CardHeader>
               <CardContent className="flex justify-center">
                 {resultImgUrl ? (
-                  <img
-                    className="w-full aspect-square border rounded object-contain"
-                    src={resultImgUrl}
-                    alt="결과 이미지"
-                    onClick={() => setIsOpen(true)}
-                  />
+                  <Dialog>
+                    <DialogTrigger asChild>
+                    <img
+                      className="w-full aspect-square border rounded object-contain"
+                      src={resultImgUrl}
+                      alt="결과 이미지"
+                    />
+                    </DialogTrigger>
+                    <DialogContent className="w-screen h-screen p-0 bg-transparent border-0 shadow-none">
+                      <img
+                        className="w-full h-full rounded object-contain"
+                        src={resultImgUrl}
+                        alt="결과 이미지"
+                      />
+                    </DialogContent>
+                  </Dialog>
                 ) : (
                   <div className="w-full aspect-square border rounded flex items-center justify-center text-muted-foreground">
                     결과 이미지
@@ -221,18 +231,6 @@ export default function UploadPage({
           되돌리기
         </Button>
       )} */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
-          onClick={() => setIsOpen(false)}
-        >
-          <img
-            src='결과이미지 확대'
-            alt={resultImgUrl}
-            className="max-h-[90%] max-w-[90%] rounded-lg shadow-lg"
-          />
-        </div>
-      )}
     </div>
   );
 }
