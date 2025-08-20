@@ -2,11 +2,7 @@ import { z } from "zod";
 import type { Route } from "./+types/image-generate";
 import { data } from "react-router";
 import Replicate from "replicate";
-import {
-  cropImageFileToFourFive,
-  fileToBase64,
-  streamToBase64,
-} from "~/lib/utils";
+import { fileToBase64, streamToBase64 } from "~/lib/utils";
 
 const formSchema = z.object({
   clothImgUrl: z.string().optional(),
@@ -29,9 +25,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   const replicate = new Replicate();
 
-  const croppedFile = await cropImageFileToFourFive(validFormData.myImg);
-
-  const myImgBuffer = await fileToBase64(croppedFile);
+  const myImgBuffer = await fileToBase64(validFormData.myImg);
   let imageUrl = "";
 
   try {
