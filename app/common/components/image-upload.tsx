@@ -11,11 +11,13 @@ export default function ImageUpload({
   preview,
   setPreview,
   imgUrl,
+  setCroppedFile,
 }: {
   name: string;
   preview: string | null;
   setPreview: Dispatch<SetStateAction<string | null>>;
   imgUrl?: string;
+  setCroppedFile?: Dispatch<SetStateAction<File | null>>;
 }) {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -94,6 +96,7 @@ export default function ImageUpload({
                 const croppedFile = new File([blob], file.name, {
                   type: "image/jpeg",
                 });
+                if (setCroppedFile) setCroppedFile(croppedFile);
 
                 // 👉 서버 업로드 시에는 croppedFile을 사용하세요
                 // 예: formData.append("myImg", croppedFile);
