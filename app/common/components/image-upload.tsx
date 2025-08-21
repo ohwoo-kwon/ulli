@@ -22,7 +22,9 @@ export default function ImageUpload({
   const imageDivRef = useRef<HTMLDivElement | null>(null);
   const MAX_FILE_SIZE = 10000 * 1024; // 10MB 제한
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setPreview(null);
     const file = event.target.files?.[0];
     if (file) {
@@ -33,11 +35,12 @@ export default function ImageUpload({
 
       setError(null);
 
+      // File → DataURL
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          const targetRatio = 4 / 5; // 가로:세로 비율
+          const targetRatio = 4 / 5;
           const width = img.width;
           const height = img.height;
           const currentRatio = width / height;
@@ -48,17 +51,17 @@ export default function ImageUpload({
             offsetY: number;
 
           if (currentRatio > targetRatio) {
-            // 가로가 더 긴 경우 → 가로 잘라내기 (중앙)
+            // 가로가 더 긴 경우 → 좌우 잘라냄
             cropHeight = height;
             cropWidth = height * targetRatio;
             offsetX = (width - cropWidth) / 2;
             offsetY = 0; // 위쪽 기준
           } else {
-            // 세로가 더 긴 경우 → 세로 잘라내기 (위쪽 기준)
+            // 세로가 더 긴 경우 → 위쪽 기준으로 아래 잘라냄
             cropWidth = width;
             cropHeight = width / targetRatio;
             offsetX = 0;
-            offsetY = 0; // 맨 위부터 시작
+            offsetY = 0;
           }
 
           const canvas = document.createElement("canvas");
@@ -66,22 +69,41 @@ export default function ImageUpload({
           canvas.height = cropHeight;
           const ctx = canvas.getContext("2d");
 
-          if (ctx) {
-            ctx.drawImage(
-              img,
-              offsetX,
-              offsetY,
-              cropWidth,
-              cropHeight,
-              0,
-              0,
-              cropWidth,
-              cropHeight
-            );
-            const croppedDataUrl = canvas.toDataURL("image/jpeg");
-            setPreview(croppedDataUrl); // 크롭된 이미지를 미리보기로 설정
-          }
+          if (!ctx) return;
+
+          ctx.drawImage(
+            img,
+            offsetX,
+            offsetY,
+            cropWidth,
+            cropHeight,
+            0,
+            0,
+            cropWidth,
+            cropHeight
+          );
+
+          // ✅ preview 설정 (DataURL)
+          const croppedDataUrl = canvas.toDataURL("image/jpeg");
+          setPreview(croppedDataUrl);
+
+          // ✅ 파일 자체도 새로운 File 로 변환
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const croppedFile = new File([blob], file.name, {
+                  type: "image/jpeg",
+                });
+
+                // 👉 서버 업로드 시에는 croppedFile을 사용하세요
+                // 예: formData.append("myImg", croppedFile);
+              }
+            },
+            "image/jpeg",
+            0.95
+          );
         };
+
         if (e.target?.result) {
           img.src = e.target.result as string;
         }
