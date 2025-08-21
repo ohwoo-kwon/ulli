@@ -123,9 +123,9 @@ export default function ImageUpload({
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+
     setPreview(null);
     const file = event.dataTransfer.files?.[0];
-
     if (file) {
       if (file.size > MAX_FILE_SIZE) {
         setError("파일 크기는 10MB를 초과할 수 없습니다.");
@@ -133,8 +133,85 @@ export default function ImageUpload({
       }
 
       setError(null);
-      setPreview(URL.createObjectURL(file));
+
+      // File → DataURL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const targetRatio = 4 / 5;
+          const width = img.width;
+          const height = img.height;
+          const currentRatio = width / height;
+
+          let cropWidth: number,
+            cropHeight: number,
+            offsetX: number,
+            offsetY: number;
+
+          if (currentRatio > targetRatio) {
+            // 가로가 더 긴 경우 → 좌우 잘라냄
+            cropHeight = height;
+            cropWidth = height * targetRatio;
+            offsetX = (width - cropWidth) / 2;
+            offsetY = 0; // 위쪽 기준
+          } else {
+            // 세로가 더 긴 경우 → 위쪽 기준으로 아래 잘라냄
+            cropWidth = width;
+            cropHeight = width / targetRatio;
+            offsetX = 0;
+            offsetY = 0;
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = cropWidth;
+          canvas.height = cropHeight;
+          const ctx = canvas.getContext("2d");
+
+          if (!ctx) return;
+
+          ctx.drawImage(
+            img,
+            offsetX,
+            offsetY,
+            cropWidth,
+            cropHeight,
+            0,
+            0,
+            cropWidth,
+            cropHeight
+          );
+
+          // ✅ preview 설정 (DataURL)
+          const croppedDataUrl = canvas.toDataURL("image/jpeg");
+          setPreview(croppedDataUrl);
+
+          // ✅ 파일 자체도 새로운 File 로 변환
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const croppedFile = new File([blob], file.name, {
+                  type: "image/jpeg",
+                });
+                if (setCroppedFile) setCroppedFile(croppedFile);
+
+                // 👉 서버 업로드 시에는 croppedFile을 사용하세요
+                // 예: formData.append("myImg", croppedFile);
+              }
+            },
+            "image/jpeg",
+            0.95
+          );
+        };
+
+        if (e.target?.result) {
+          img.src = e.target.result as string;
+        }
+      };
+
+      reader.readAsDataURL(file);
     }
+
     imageDivRef.current?.classList.remove("bg-gray-200");
   };
 
