@@ -5,7 +5,6 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { cropImageFileToFourFive } from "~/lib/utils";
 
 export default function ImageUpload({
   name,
@@ -23,9 +22,7 @@ export default function ImageUpload({
   const imageDivRef = useRef<HTMLDivElement | null>(null);
   const MAX_FILE_SIZE = 10000 * 1024; // 10MB 제한
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreview(null);
     const file = event.target.files?.[0];
     if (file) {
@@ -51,17 +48,17 @@ export default function ImageUpload({
             offsetY: number;
 
           if (currentRatio > targetRatio) {
-            // 가로가 더 긴 경우 → 가로 잘라내기
+            // 가로가 더 긴 경우 → 가로 잘라내기 (중앙)
             cropHeight = height;
             cropWidth = height * targetRatio;
             offsetX = (width - cropWidth) / 2;
-            offsetY = 0;
+            offsetY = 0; // 위쪽 기준
           } else {
-            // 세로가 더 긴 경우 → 세로 잘라내기
+            // 세로가 더 긴 경우 → 세로 잘라내기 (위쪽 기준)
             cropWidth = width;
             cropHeight = width / targetRatio;
             offsetX = 0;
-            offsetY = 0;
+            offsetY = 0; // 맨 위부터 시작
           }
 
           const canvas = document.createElement("canvas");
@@ -82,7 +79,7 @@ export default function ImageUpload({
               cropHeight
             );
             const croppedDataUrl = canvas.toDataURL("image/jpeg");
-            setPreview(croppedDataUrl);
+            setPreview(croppedDataUrl); // 크롭된 이미지를 미리보기로 설정
           }
         };
         if (e.target?.result) {
@@ -90,8 +87,7 @@ export default function ImageUpload({
         }
       };
 
-      const croppedFile = await cropImageFileToFourFive(file);
-      reader.readAsDataURL(croppedFile);
+      reader.readAsDataURL(file);
     }
   };
 

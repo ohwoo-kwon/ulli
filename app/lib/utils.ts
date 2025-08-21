@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import sharp from "sharp";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,84 +24,34 @@ export async function streamToBase64(stream: ReadableStream) {
   return base64;
 }
 
-export async function cropImageFileToFourFive(file: File): Promise<File> {
-  const dataUrl = await fileToBase64Client(file);
+export async function cropToFourFive(buffer: Buffer): Promise<Buffer> {
+  const metadata = await sharp(buffer).metadata();
+  if (!metadata.width || !metadata.height) {
+    throw new Error("이미지 크기를 가져올 수 없습니다.");
+  }
 
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const targetRatio = 4 / 5; // 가로:세로
-      const width = img.width;
-      const height = img.height;
-      const currentRatio = width / height;
+  const targetRatio = 4 / 5;
+  const { width, height } = metadata;
+  const currentRatio = width / height;
 
-      let cropWidth: number,
-        cropHeight: number,
-        offsetX: number,
-        offsetY: number;
+  let cropWidth: number, cropHeight: number, left: number, top: number;
 
-      if (currentRatio > targetRatio) {
-        // 가로가 더 긴 경우 → 중앙 기준 크롭
-        cropHeight = height;
-        cropWidth = height * targetRatio;
-        offsetX = (width - cropWidth) / 2;
-        offsetY = 0; // 위쪽 기준
-      } else {
-        // 세로가 더 긴 경우 → 위쪽 기준 크롭
-        cropWidth = width;
-        cropHeight = width / targetRatio;
-        offsetX = 0;
-        offsetY = 0;
-      }
+  if (currentRatio > targetRatio) {
+    // 가로가 더 긴 경우 → 좌우 잘라냄 (중앙 기준)
+    cropHeight = height;
+    cropWidth = Math.floor(height * targetRatio);
+    left = Math.floor((width - cropWidth) / 2);
+    top = 0;
+  } else {
+    // 세로가 더 긴 경우 → 아래 잘라냄 (위쪽 기준)
+    cropWidth = width;
+    cropHeight = Math.floor(width / targetRatio);
+    left = 0;
+    top = 0;
+  }
 
-      const canvas = document.createElement("canvas");
-      canvas.width = cropWidth;
-      canvas.height = cropHeight;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        reject(new Error("Canvas not supported"));
-        return;
-      }
-
-      ctx.drawImage(
-        img,
-        offsetX,
-        offsetY,
-        cropWidth,
-        cropHeight,
-        0,
-        0,
-        cropWidth,
-        cropHeight
-      );
-
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            const croppedFile = new File([blob], file.name, {
-              type: "image/jpeg",
-            });
-            resolve(croppedFile);
-          } else {
-            reject(new Error("Failed to create blob"));
-          }
-        },
-        "image/jpeg",
-        0.95
-      );
-    };
-
-    img.onerror = reject;
-    img.src = dataUrl;
-  });
-}
-
-async function fileToBase64Client(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+  return sharp(buffer)
+    .extract({ left, top, width: cropWidth, height: cropHeight })
+    .toFormat("jpeg")
+    .toBuffer();
 }
