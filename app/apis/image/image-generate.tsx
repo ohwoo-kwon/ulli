@@ -54,17 +54,17 @@ If a bottom is provided but the person photo shows only the upper body, generate
       // replicate 를 통해서 결과 이미지 생성
       input.image_input.push(validFormData.clothImgUrl);
     }
+
+    const output = await replicate.run("google/nano-banana", {
+      input,
+    });
+
+    imageUrl = await streamToBase64(output as ReadableStream);
   } catch (e) {
     console.log(e);
     // @ts-ignore
     return data({ error: e.message }, { status: 400 });
   }
-
-  const output = await replicate.run("google/nano-banana", {
-    input,
-  });
-
-  imageUrl = await streamToBase64(output as ReadableStream);
 
   return { imageUrl: `data:img/png;base64,${imageUrl}` };
 };
