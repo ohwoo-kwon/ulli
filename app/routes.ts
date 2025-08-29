@@ -26,4 +26,5 @@ export default [
     route("/image/manipulation", "apis/image/manipulation.tsx"),
   ]),
   ...prefix("/fitting", [index("features/fitting/pages/fitting.tsx")]),
+  ...prefix("/coordi", [index("features/fitting/pages/coordi.tsx")]),
 ] satisfies RouteConfig;

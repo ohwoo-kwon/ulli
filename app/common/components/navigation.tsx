@@ -71,6 +71,20 @@ export default function Navigation() {
                   가상 피팅
                 </NavigationMenuLink>
               </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href="/coordi"
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-primary text-primary-foreground",
+                    pathname === "/coordi"
+                      ? "bg-accent text-accent-foreground"
+                      : ""
+                  )}
+                >
+                  코디
+                </NavigationMenuLink>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </>
