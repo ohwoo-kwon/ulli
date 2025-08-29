@@ -17,6 +17,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from "~/common/components/ui/dialog";
+import { RotateCwIcon } from "lucide-react";
 
 const prompt = `Replace the person's current clothes entirely with the given clothes. Remove all original clothing, including jackets, coats, or layers, so that only the provided clothes remain. Keep the exact style, type, color, texture, and material of the new clothes. Make the new clothes fit naturally and look realistic. Keep the face, skin, and body unchanged. Ensure the new clothes are clearly visible. 
 
@@ -68,6 +69,8 @@ export default function Fitting() {
   const [croppedFile, setCroppedFile] = useState<File | null>(null);
   const [resultImgUrl, setResultImgUrl] = useState("");
 
+  const isLoading = fetcher.state === "submitting";
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     if (croppedFile) {
@@ -87,7 +90,7 @@ export default function Fitting() {
   }, [fetcher.data]);
 
   return (
-    <div className="mx-4 my-8">
+    <div className="mx-4 my-8 md:flex md:gap-16">
       <Form
         className="flex flex-col gap-8 w-fit mx-auto"
         onSubmit={handleSubmit}
@@ -113,7 +116,9 @@ export default function Fitting() {
             <MulitImageUpload name="itemImg" />
           </CardContent>
         </Card>
-        <Button>피팅</Button>
+        <Button disabled={isLoading}>
+          {isLoading ? <RotateCwIcon className="animate-spin" /> : "피팅"}
+        </Button>
         {fetcher.data && "error" in fetcher.data && (
           <span className="text-red-500 text-xs text-center w-80">
             {fetcher.data.error === "fetch failed"
@@ -121,25 +126,30 @@ export default function Fitting() {
               : fetcher.data.error}
           </span>
         )}
-        {resultImgUrl ? (
-          <Dialog>
-            <DialogTrigger asChild>
-              <img
-                className="w-full aspect-square border rounded object-contain"
-                src={resultImgUrl}
-                alt="결과 이미지"
-              />
-            </DialogTrigger>
-            <DialogContent className="w-screen h-screen p-0 bg-transparent border-0 shadow-none">
-              <img
-                className="w-full h-full rounded object-contain"
-                src={resultImgUrl}
-                alt="결과 이미지"
-              />
-            </DialogContent>
-          </Dialog>
-        ) : null}
       </Form>
+      {isLoading && !resultImgUrl ? (
+        <div className="flex items-center justify-center font-bold text-2xl text-muted-foreground w-80 aspect-square rounded bg-gray-200 animate-pulse mx-auto mt-16 md:mt-0 md:w-full md:max-w-[600px] md:max-h-[600px]">
+          👗 피팅 진행 중
+        </div>
+      ) : null}
+      {resultImgUrl ? (
+        <Dialog>
+          <DialogTrigger asChild>
+            <img
+              className="w-80 aspect-square border rounded object-contain mx-auto mt-16 md:mt-0 md:w-full md:max-w-[600px] md:max-h-[600px]"
+              src={resultImgUrl}
+              alt="결과 이미지"
+            />
+          </DialogTrigger>
+          <DialogContent className="w-screen h-screen p-0 bg-transparent border-0 shadow-none">
+            <img
+              className="w-full h-full rounded object-contain"
+              src={resultImgUrl}
+              alt="결과 이미지"
+            />
+          </DialogContent>
+        </Dialog>
+      ) : null}
     </div>
   );
 }
