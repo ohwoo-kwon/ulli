@@ -19,10 +19,11 @@ import {
 import { RotateCwIcon } from "lucide-react";
 import MulitImageUpload from "../components/multi-image-upload";
 
-const person_prompt = `Extract only the clothing items worn by the person in the photo and display them clearly on a plain white background. 
-Do not include the person’s face, body, or background. 
-Arrange the clothes neatly as if making a fashion styling board: top, bottom, outerwear, shoes, and accessories. 
-Make it look like a clean clothing catalog or outfit suggestion image.`;
+const person_prompt = `Extract only the clothing items that actually appear in the input photo. 
+Do not create or add any items that are not present in the image. 
+Exclude the person’s face, body, and background. 
+Arrange the extracted clothes neatly on a plain white background, organized like a fashion styling board (e.g., tops, bottoms, outerwear, shoes, accessories). 
+The result should look like a clean clothing catalog or outfit suggestion image, but must include only the garments and accessories that are visible in the input photo.`;
 
 const multi_image_prompt = `From the provided input images (which may include people wearing clothes or individual fashion items), extract all visible fashion items such as tops, bottoms, outerwear, dresses, shoes, bags, hats, and accessories. 
 Do not include any human faces, bodies, or backgrounds. 
