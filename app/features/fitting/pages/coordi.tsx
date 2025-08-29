@@ -19,24 +19,45 @@ import {
 import { RotateCwIcon } from "lucide-react";
 import MulitImageUpload from "../components/multi-image-upload";
 
-const prompt = `Using only the clothing items that appear in the input images, create a clean outfit board. 
-Do not invent or add any new clothes. 
-Exclude any person’s face, body, or background. 
-Arrange the extracted clothes neatly on a plain white background, organized as a fashion styling board or clothing collage. 
-Make the result look like a clothing catalog or outfit suggestion image, showing only the provided garments.`;
+const person_prompt = `Extract only the clothing items worn by the person in the photo and display them clearly on a plain white background. 
+Do not include the person’s face, body, or background. 
+Arrange the clothes neatly as if making a fashion styling board: top, bottom, outerwear, shoes, and accessories. 
+Make it look like a clean clothing catalog or outfit suggestion image.`;
+
+const multi_image_prompt = `From the provided input images (which may include people wearing clothes or individual fashion items), extract all visible fashion items such as tops, bottoms, outerwear, dresses, shoes, bags, hats, and accessories. 
+Do not include any human faces, bodies, or backgrounds. 
+Combine the extracted clothing and accessories into a single clean image, arranged neatly on a plain white background. 
+Display the items in an organized layout as if creating a fashion styling board or outfit collage. 
+Use only the items from the input images without inventing new ones. 
+Make the final result look like a professional fashion catalog or outfit suggestion board.`;
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
 
-  const snapImgFile = formData.get("snapImg") as File;
+  const snapImgFiles = formData.getAll("snapImg") as File[];
+
+  const image_input = [];
 
   try {
-    const snapImgBuffer = await fileToBase64(snapImgFile);
-
-    const image_input = [`data:${snapImgFile.type};base64,${snapImgBuffer}`];
+    if (snapImgFiles.length === 1) {
+      const snapImgFile = snapImgFiles[0];
+      const snapImgBuffer = await fileToBase64(snapImgFile);
+      image_input.push(`data:${snapImgFile.type};base64,${snapImgBuffer}`);
+    } else {
+      const snapImgBufferPromises: Promise<string>[] = [];
+      snapImgFiles.forEach((snapImgFile) => {
+        snapImgBufferPromises.push(fileToBase64(snapImgFile));
+      });
+      const snapImgBuffers = await Promise.all(snapImgBufferPromises);
+      snapImgBuffers.forEach((snapImgBuffer, idx) =>
+        image_input.push(
+          `data:${snapImgFiles[idx].type};base64,${snapImgBuffer}`
+        )
+      );
+    }
 
     const input = {
-      prompt,
+      prompt: snapImgFiles.length === 1 ? person_prompt : multi_image_prompt,
       image_input,
     };
 
