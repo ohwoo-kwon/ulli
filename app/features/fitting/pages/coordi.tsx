@@ -28,6 +28,7 @@ The result should look like a clean clothing catalog or outfit suggestion image,
 const multi_image_prompt = `From the provided input images (which may include people wearing clothes or individual fashion items), extract all visible fashion items such as tops, bottoms, outerwear, dresses, shoes, bags, hats, and accessories.
 Do not include any human faces, bodies, or backgrounds.
 Arrange the extracted items together into a single image to create a natural outfit, as if styling a person for today’s look. Make the outfit appear realistic and cohesive, combining the items in a way that could be worn together.
+Adjust the sizes and proportions of all clothing items realistically, as if a real person could wear them together. Tops, bottoms, shoes, and accessories should all be in natural scale relative to each other.
 Place the items on a clean white background, but show them in context as a coordinated look (e.g., top above bottom, shoes below, accessories around).
 The final image should look like a professional fashion catalog, a “today’s outfit” suggestion, or a fashion styling board.
 Use only the items from the input images without inventing new ones.`;
