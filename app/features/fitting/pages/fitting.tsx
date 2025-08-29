@@ -72,6 +72,7 @@ export default function Fitting() {
   const isLoading = fetcher.state === "submitting";
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    setResultImgUrl("");
     const formData = new FormData(event.currentTarget);
     if (croppedFile) {
       formData.set("myImg", croppedFile);

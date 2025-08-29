@@ -94,6 +94,7 @@ export default function UploadPage({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setResultImgUrl("");
 
     const formData = new FormData(event.currentTarget);
 
@@ -229,6 +230,10 @@ export default function UploadPage({
                         />
                       </DialogContent>
                     </Dialog>
+                  ) : isLoading ? (
+                    <div className="flex items-center justify-center font-bold text-2xl w-full aspect-square rounded text-muted-foreground bg-gray-200 animate-pulse">
+                      👗 피팅 진행 중
+                    </div>
                   ) : (
                     <div className="w-full aspect-square border rounded flex items-center justify-center text-muted-foreground">
                       결과 이미지
