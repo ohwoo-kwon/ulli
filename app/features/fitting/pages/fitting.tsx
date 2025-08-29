@@ -19,7 +19,7 @@ import {
 } from "~/common/components/ui/dialog";
 import { RotateCwIcon } from "lucide-react";
 
-const prompt = `Replace the person's current clothes entirely with the given clothes. Remove all original clothing, including jackets, coats, or layers, so that only the provided clothes remain. Keep the exact style, type, color, texture, and material of the new clothes. Make the new clothes fit naturally and look realistic. Keep the face, skin, and body unchanged. Ensure the new clothes are clearly visible. 
+const prompt = `Replace the person's current clothes from the first image entirely with the given clothes from the second image to last image. Remove all original clothing, including jackets, coats, or layers, so that only the provided clothes remain. Keep the exact style, type, color, texture, and material of the new clothes. Make the new clothes fit naturally and look realistic. Keep the face, skin, and body unchanged. Ensure the new clothes are clearly visible. 
 
 If a bottom is provided but the person photo shows only the upper body, generate a full-body image of the person in the same background. Never generate a topless or partially nude upper body. Do not alter the color, pattern, or shape of the given clothes in any way, for example, do not change a checkered shirt’s pattern or color.`;
 
