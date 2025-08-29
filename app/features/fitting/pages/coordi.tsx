@@ -17,12 +17,13 @@ import {
   DialogTrigger,
 } from "~/common/components/ui/dialog";
 import { RotateCwIcon } from "lucide-react";
+import MulitImageUpload from "../components/multi-image-upload";
 
-const prompt = `Extract only the clothing items worn by the person in the photo and display them clearly on a plain white background. 
-Do not include the person’s face, body, or background. 
-Arrange the clothes neatly as if making a fashion styling board: top, bottom, outerwear, shoes, and accessories. 
-Make it look like a clean clothing catalog or outfit suggestion image.
-`;
+const prompt = `Using only the clothing items that appear in the input images, create a clean outfit board. 
+Do not invent or add any new clothes. 
+Exclude any person’s face, body, or background. 
+Arrange the extracted clothes neatly on a plain white background, organized as a fashion styling board or clothing collage. 
+Make the result look like a clothing catalog or outfit suggestion image, showing only the provided garments.`;
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
@@ -85,18 +86,14 @@ export default function Coordi() {
       >
         <Card className="w-80">
           <CardHeader>
-            <CardTitle>스냅 사진</CardTitle>
+            <CardTitle>참고 이미지</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <ImageUpload
-              name="snapImg"
-              preview={snapImgPreview}
-              setPreview={setSnapImgPreview}
-            />
+            <MulitImageUpload name="snapImg" />
           </CardContent>
         </Card>
         <Button disabled={isLoading}>
-          {isLoading ? <RotateCwIcon className="animate-spin" /> : "룩북 제작"}
+          {isLoading ? <RotateCwIcon className="animate-spin" /> : "코디 제작"}
         </Button>
         {fetcher.data && "error" in fetcher.data && (
           <span className="text-red-500 text-xs text-center w-80">
