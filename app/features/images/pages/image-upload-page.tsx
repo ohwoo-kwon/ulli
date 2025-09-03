@@ -248,7 +248,7 @@ export default function UploadPage({
                     해당 의상을 착용한 모습과는 차이가 있을 수 있습니다. 착용
                     이미지는 참고용으로만 사용해 주세요.
                   </p>
-                  <p className="mb-0">⏰ 이미지 생성에 약 30초가 소요됩니다.</p>
+                  <p className="mb-0">⏰ 이미지 생성에 약 10초가 소요됩니다.</p>
                 </CardHeader>
               </Card>
             </div>
