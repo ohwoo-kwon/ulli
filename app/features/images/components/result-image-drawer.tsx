@@ -25,12 +25,14 @@ export default function ResultImageDrawer({
 }) {
   const [open, setOpen] = useState(false);
 
+  const onClose = () => setOpen(false);
+
   useEffect(() => {
     if (isLoading) setOpen(true);
   }, [isLoading]);
 
   return (
-    <Drawer open={open}>
+    <Drawer open={open} onClose={onClose}>
       <DrawerTrigger className="w-full">
         <Button className="w-full" variant="secondary" disabled={!resultImgUrl}>
           결과 확인
@@ -70,9 +72,9 @@ export default function ResultImageDrawer({
               설문
             </Link>
           </Button>
-          <DrawerClose>
-            <Button className="w-full">확인</Button>
-          </DrawerClose>
+          <Button className="w-full" onClick={onClose}>
+            확인
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
