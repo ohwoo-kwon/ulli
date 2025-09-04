@@ -72,19 +72,18 @@ export default function ResultImageDrawer({
           </Dialog>
         </div>
         <DrawerFooter>
-          <Button
-            className="w-full"
-            variant="secondary"
-            disabled={!resultImgUrl}
-            asChild
-          >
-            <Link to="https://naver.me/FK0xDjfb" target="_blank">
-              설문
-            </Link>
-          </Button>
-          <Button className="w-full" onClick={onClose}>
-            확인
-          </Button>
+          {resultImgUrl ? (
+            <>
+              <Button className="w-full" variant="secondary" asChild>
+                <Link to="https://naver.me/FK0xDjfb" target="_blank">
+                  설문
+                </Link>
+              </Button>
+              <Button className="w-full" onClick={onClose}>
+                확인
+              </Button>
+            </>
+          ) : null}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
