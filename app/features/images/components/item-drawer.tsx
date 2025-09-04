@@ -60,13 +60,25 @@ export default function ItemDrawer() {
           </div>
           <div className="grid grid-cols-2 pb-8 gap-2">
             <div className="col-span-1 flex flex-col gap-1 items-center border p-1 rounded">
-              <img src="https://image.hmall.com/static/5/6/92/39/2239926540_0.jpg?RS=600x600&AR=0&ao=1&cVer=202509032014&SF=webp" />
-              <img src="https://image.hmall.com/static/8/9/99/39/2239999896_0.jpg?RS=600x600&AR=0&ao=1&cVer=202509041837&SF=webp" />
+              <img
+                className="asepect-square w-full max-w-50"
+                src="https://image.hmall.com/static/5/6/92/39/2239926540_0.jpg?RS=600x600&AR=0&ao=1&cVer=202509032014&SF=webp"
+              />
+              <img
+                className="asepect-square w-full max-w-50"
+                src="https://image.hmall.com/static/8/9/99/39/2239999896_0.jpg?RS=600x600&AR=0&ao=1&cVer=202509041837&SF=webp"
+              />
               <CircleCheckIcon fill="green" className="text-white" />
             </div>
             <div className="col-span-1 flex flex-col gap-1 items-center border p-1 rounded">
-              <img src="https://image.hmall.com/static/7/4/38/31/2231384757_0.jpg?RS=600x600&AR=0&ao=1&cVer=202508271007&SF=webp" />
-              <img src="https://image.hmall.com/static/5/3/50/06/2206503502_0.jpg?RS=600x600&AR=0&ao=1&cVer=202503311313&SF=webp" />
+              <img
+                className="asepect-square w-full max-w-50"
+                src="https://image.hmall.com/static/7/4/38/31/2231384757_0.jpg?RS=600x600&AR=0&ao=1&cVer=202508271007&SF=webp"
+              />
+              <img
+                className="asepect-square w-full max-w-50"
+                src="https://image.hmall.com/static/5/3/50/06/2206503502_0.jpg?RS=600x600&AR=0&ao=1&cVer=202503311313&SF=webp"
+              />
               <XCircleIcon fill="red" className="text-white" />
             </div>
           </div>

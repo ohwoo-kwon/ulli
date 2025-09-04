@@ -68,13 +68,25 @@ export default function MyImgDrawer() {
           </div>
           <div className="grid grid-cols-2 pb-8 gap-2">
             <div className="col-span-1 flex flex-col gap-1 items-center border p-1 rounded">
-              <img className="aspect-square object-cover" src="/good1.png" />
-              <img className="aspect-square object-cover" src="/good2.jpeg" />
+              <img
+                className="aspect-square object-cover w-full max-w-50"
+                src="/good1.png"
+              />
+              <img
+                className="aspect-square object-cover w-full max-w-50"
+                src="/good2.jpeg"
+              />
               <CircleCheckIcon fill="green" className="text-white" />
             </div>
             <div className="col-span-1 flex flex-col gap-1 items-center border p-1 rounded">
-              <img className="aspect-square object-cover" src="/bad1.jpg" />
-              <img className="aspect-square object-cover" src="/bad2.jpg" />
+              <img
+                className="aspect-square object-cover w-full max-w-50"
+                src="/bad1.jpg"
+              />
+              <img
+                className="aspect-square object-cover w-full max-w-50"
+                src="/bad2.jpg"
+              />
               <XCircleIcon fill="red" className="text-white" />
             </div>
           </div>

@@ -221,6 +221,16 @@ export default function UploadPage({
                   : fetcher.data.error}
               </span>
             )}
+            <Card className="w-80 bg-yellow-100">
+              <CardHeader className="text-sm *:mb-2">
+                <p>
+                  ⚠️ 결과 이미지는 AI를 활용해 생성된 이미지로, 실제 인물이 해당
+                  의상을 착용한 모습과는 차이가 있을 수 있습니다. 착용 이미지는
+                  참고용으로만 사용해 주세요.
+                </p>
+                <p className="mb-0">⏰ 이미지 생성에 약 10초가 소요됩니다.</p>
+              </CardHeader>
+            </Card>
             <ResultImageDrawer
               resultImgUrl={resultImgUrl}
               isLoading={isLoading}
