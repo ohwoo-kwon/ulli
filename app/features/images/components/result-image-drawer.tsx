@@ -34,7 +34,12 @@ export default function ResultImageDrawer({
   return (
     <Drawer open={open} onClose={onClose}>
       <DrawerTrigger className="w-full">
-        <Button className="w-full" variant="secondary" disabled={!resultImgUrl}>
+        <Button
+          className="w-full"
+          type="button"
+          variant="secondary"
+          disabled={!resultImgUrl}
+        >
           결과 확인
         </Button>
       </DrawerTrigger>
