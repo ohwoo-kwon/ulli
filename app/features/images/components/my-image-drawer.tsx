@@ -1,4 +1,5 @@
 import { CircleCheckIcon, XCircleIcon } from "lucide-react";
+import { useState } from "react";
 import { Button } from "~/common/components/ui/button";
 import {
   Drawer,
@@ -11,8 +12,10 @@ import {
 } from "~/common/components/ui/drawer";
 
 export default function MyImgDrawer() {
+  const [open, setOpen] = useState(true);
+
   return (
-    <Drawer defaultOpen>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger className="cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +47,7 @@ export default function MyImgDrawer() {
                   className="text-white"
                   size={16}
                 />
-                <span>인물 중 사진</span>
+                <span>인물 중심 사진</span>
               </li>
               <li className="flex gap-2 items-center">
                 <CircleCheckIcon
@@ -92,7 +95,7 @@ export default function MyImgDrawer() {
           </div>
         </div>
         <DrawerFooter>
-          <DrawerClose>
+          <DrawerClose asChild>
             <Button className="w-full">확인</Button>
           </DrawerClose>
         </DrawerFooter>

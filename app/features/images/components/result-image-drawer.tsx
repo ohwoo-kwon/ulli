@@ -8,7 +8,6 @@ import {
 } from "~/common/components/ui/dialog";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
@@ -33,7 +32,7 @@ export default function ResultImageDrawer({
 
   return (
     <Drawer open={open} onClose={onClose}>
-      <DrawerTrigger className="w-full">
+      <DrawerTrigger className="w-full" asChild>
         <Button
           className="w-full"
           type="button"
@@ -73,7 +72,12 @@ export default function ResultImageDrawer({
           </Dialog>
         </div>
         <DrawerFooter>
-          <Button className="w-full" variant="secondary" asChild>
+          <Button
+            className="w-full"
+            variant="secondary"
+            disabled={!resultImgUrl}
+            asChild
+          >
             <Link to="https://naver.me/FK0xDjfb" target="_blank">
               설문
             </Link>
