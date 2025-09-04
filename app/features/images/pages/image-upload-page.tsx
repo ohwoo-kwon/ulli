@@ -20,11 +20,6 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "~/common/components/ui/carousel";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "~/common/components/ui/dialog";
 import ItemDrawer from "../components/item-drawer";
 import MyImgDrawer from "../components/my-image-drawer";
 import ResultImageDrawer from "../components/result-image-drawer";
@@ -35,7 +30,8 @@ const searchParamsSchema = z.object({
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
-  const imgUrls = formData.getAll("imgUrls") as string[];
+  const formImgUrls = formData.getAll("imgUrls") as string[];
+  const imgUrls = formImgUrls.map((v) => v + "&AR=0");
   return { imgUrls };
 };
 
