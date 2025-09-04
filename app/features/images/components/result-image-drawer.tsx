@@ -39,6 +39,7 @@ export default function ResultImageDrawer({
           type="button"
           variant="secondary"
           disabled={!resultImgUrl}
+          onClick={() => setOpen(true)}
         >
           결과 확인
         </Button>
