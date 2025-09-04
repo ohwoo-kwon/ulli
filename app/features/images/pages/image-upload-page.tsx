@@ -31,7 +31,7 @@ const searchParamsSchema = z.object({
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
   const formImgUrls = formData.getAll("imgUrls") as string[];
-  const imgUrls = formImgUrls.map((v) => v + "&AR=0");
+  const imgUrls = formImgUrls.map((v) => v);
   return { imgUrls };
 };
 

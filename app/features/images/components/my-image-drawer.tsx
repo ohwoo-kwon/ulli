@@ -31,11 +31,11 @@ export default function MyImgDrawer() {
           <path d="M12 17h.01" />
         </svg>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="flex flex-col h-full">
         <DrawerHeader>
           <DrawerTitle>내 사진 업로드 가이드</DrawerTitle>
         </DrawerHeader>
-        <div className="space-y-4 px-4">
+        <div className="space-y-4 px-4 overflow-y-auto">
           <div className="grid grid-cols-2">
             <ul className="text-xs space-y-1">
               <li className="flex gap-2 items-center">

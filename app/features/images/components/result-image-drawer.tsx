@@ -44,11 +44,11 @@ export default function ResultImageDrawer({
           결과 확인
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="overflow-y-auto">
+      <DrawerContent className="flex flex-col h-full">
         <DrawerHeader>
           <DrawerTitle>AI 피팅 결과</DrawerTitle>
         </DrawerHeader>
-        <div className="px-4 space-y-4">
+        <div className="px-4 space-y-4 overflow-y-auto">
           <Dialog>
             <DialogTrigger asChild>
               {isLoading ? (
