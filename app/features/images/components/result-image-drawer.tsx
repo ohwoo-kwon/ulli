@@ -22,7 +22,7 @@ export default function ResultImageDrawer({
   resultImgUrl: string;
   isLoading: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const onClose = () => setOpen(false);
 
@@ -43,7 +43,7 @@ export default function ResultImageDrawer({
           결과 확인
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="flex flex-col h-full">
+      <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>AI 피팅 결과</DrawerTitle>
         </DrawerHeader>
@@ -51,12 +51,12 @@ export default function ResultImageDrawer({
           <Dialog>
             <DialogTrigger asChild>
               {isLoading ? (
-                <div className="mx-auto flex items-center justify-center font-bold text-2xl w-full max-w-50 aspect-square rounded text-muted-foreground bg-gray-200 animate-pulse">
+                <div className="mx-auto flex items-center justify-center font-bold text-2xl w-full max-w-100 aspect-square rounded text-muted-foreground bg-gray-200 animate-pulse">
                   👗 피팅 진행 중
                 </div>
               ) : (
                 <img
-                  className="mx-auto aspect-square max-w-40 border rounded object-contain"
+                  className="mx-auto aspect-square max-w-100 border rounded object-contain"
                   src={resultImgUrl}
                   alt="결과 이미지"
                 />
