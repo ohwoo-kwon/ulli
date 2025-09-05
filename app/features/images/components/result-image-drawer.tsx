@@ -51,12 +51,12 @@ export default function ResultImageDrawer({
           <Dialog>
             <DialogTrigger asChild>
               {isLoading ? (
-                <div className="mx-auto flex items-center justify-center font-bold text-2xl w-full max-w-100 aspect-square rounded text-muted-foreground bg-gray-200 animate-pulse">
+                <div className="mx-auto flex items-center justify-center font-bold text-2xl w-full max-w-80 aspect-square rounded text-muted-foreground bg-gray-200 animate-pulse">
                   👗 피팅 진행 중
                 </div>
               ) : (
                 <img
-                  className="mx-auto aspect-square max-w-100 border rounded object-contain"
+                  className="mx-auto aspect-square max-w-80 border rounded object-contain"
                   src={resultImgUrl}
                   alt="결과 이미지"
                 />
