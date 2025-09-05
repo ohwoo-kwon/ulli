@@ -22,7 +22,7 @@ export default function ResultImageDrawer({
   resultImgUrl: string;
   isLoading: boolean;
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const onClose = () => setOpen(false);
 
