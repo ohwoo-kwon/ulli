@@ -62,7 +62,7 @@ export default function ResultImageDrawer({
                 />
               )}
             </DialogTrigger>
-            <DialogContent className="w-screen h-screen p-0 bg-transparent border-0 shadow-none">
+            <DialogContent className="w-screen h-9/10 p-0 border-0 shadow-none">
               <img
                 className="w-full h-full rounded object-contain"
                 src={resultImgUrl}
