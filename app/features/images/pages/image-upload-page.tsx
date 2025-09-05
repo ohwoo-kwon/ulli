@@ -149,7 +149,7 @@ export default function UploadPage({
                       />
                       {actionData.imgUrls.map((imgUrl, index) => (
                         <CarouselItem key={index}>
-                          <img src={imgUrl} />
+                          <img src={imgUrl} className="mx-auto" />
                         </CarouselItem>
                       ))}
                     </CarouselContent>
