@@ -5,7 +5,7 @@ import Replicate from "replicate";
 import { streamToBase64 } from "~/lib/utils";
 
 const formSchema = z.object({
-  myImgUrl: z.instanceof(File),
+  myImgUrl: z.string(),
 });
 
 export const action = async ({ request }: Route.ActionArgs) => {
