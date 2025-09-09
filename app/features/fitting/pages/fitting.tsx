@@ -94,6 +94,7 @@ export default function Fitting() {
 
     fetcher.submit(formData, {
       method: "POST",
+      action: "/api/image/regenerate",
       encType: "multipart/form-data",
     });
   };
