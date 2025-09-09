@@ -23,6 +23,7 @@ export default [
   ]),
   ...prefix("/api", [
     route("/image/generate", "apis/image/image-generate.tsx"),
+    route("/image/regenerate", "apis/image/image-regenerate.tsx"),
     route("/image/manipulation", "apis/image/manipulation.tsx"),
   ]),
   ...prefix("/fitting", [index("features/fitting/pages/fitting.tsx")]),

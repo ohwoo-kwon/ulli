@@ -66,5 +66,5 @@ If a bottom is provided but the person photo shows only the upper body, generate
     return data({ error: e.message }, { status: 400 });
   }
 
-  return { imageUrl: `data:img/png;base64,${imageUrl}` };
+  return { imageUrl: `data:img/jpeg;base64,${imageUrl}` };
 };

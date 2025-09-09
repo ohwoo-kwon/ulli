@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "~/common/components/ui/card";
 import { useEffect, useState } from "react";
-import { data, Link, useFetcher } from "react-router";
+import { data, useFetcher } from "react-router";
 import { RotateCwIcon } from "lucide-react";
 import type { Route } from "./+types/image-upload-page";
 import { z } from "zod";

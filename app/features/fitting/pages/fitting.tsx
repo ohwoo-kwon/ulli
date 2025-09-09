@@ -58,7 +58,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     });
 
     const imageUrl = await streamToBase64(output as ReadableStream);
-    return { imageUrl: `data:img/png;base64,${imageUrl}` };
+    return { imageUrl: `data:img/jpeg;base64,${imageUrl}` };
   } catch (e) {
     console.log(e);
     // @ts-ignore
@@ -70,7 +70,7 @@ export default function Fitting() {
   const fetcher = useFetcher();
   const [myImgPreview, setMyImgPreview] = useState<string | null>(null);
   const [croppedFile, setCroppedFile] = useState<File | null>(null);
-  const [resultImgUrl, setResultImgUrl] = useState("");
+  const [resultImgUrl, setResultImgUrl] = useState("a");
 
   const isLoading = fetcher.state === "submitting";
 
@@ -80,6 +80,17 @@ export default function Fitting() {
     if (croppedFile) {
       formData.set("myImg", croppedFile);
     }
+
+    fetcher.submit(formData, {
+      method: "POST",
+      encType: "multipart/form-data",
+    });
+  };
+
+  const handleReFit = () => {
+    setResultImgUrl("");
+    const formData = new FormData();
+    formData.set("myImgUrl", resultImgUrl);
 
     fetcher.submit(formData, {
       method: "POST",
@@ -139,11 +150,16 @@ export default function Fitting() {
       {resultImgUrl ? (
         <Dialog>
           <DialogTrigger asChild>
-            <img
-              className="w-80 aspect-square border rounded object-contain mx-auto mt-16 md:mt-0 md:w-full md:max-w-[600px] md:max-h-[600px]"
-              src={resultImgUrl}
-              alt="결과 이미지"
-            />
+            <div className="w-80 mt-16 md:mt-0 md:w-full md:max-w-[600px] md:max-h-[600px]">
+              <img
+                className="w-full aspect-square border rounded object-contain mx-auto"
+                src={resultImgUrl}
+                alt="결과 이미지"
+              />
+              <Button className="w-full mt-2" onClick={handleReFit}>
+                치수 키워서 입어보기
+              </Button>
+            </div>
           </DialogTrigger>
           <DialogContent className="w-screen h-screen p-0 bg-transparent border-0 shadow-none">
             <img
