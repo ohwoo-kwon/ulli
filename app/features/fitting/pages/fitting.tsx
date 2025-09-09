@@ -70,7 +70,7 @@ export default function Fitting() {
   const fetcher = useFetcher();
   const [myImgPreview, setMyImgPreview] = useState<string | null>(null);
   const [croppedFile, setCroppedFile] = useState<File | null>(null);
-  const [resultImgUrl, setResultImgUrl] = useState("a");
+  const [resultImgUrl, setResultImgUrl] = useState("");
 
   const isLoading = fetcher.state === "submitting";
 
