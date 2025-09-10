@@ -12,7 +12,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   if (request.method !== "POST") return data({ status: 404 });
   const formData = await request.formData();
 
-  const prompt = `주어진 사진에서 사람이 입고 있는 옷들을 한 치수 크게 만들어주세요. 치수가 커진 것인 눈에 띄어야합니다.`;
+  const prompt = `주어진 사진에서 사람이 입고 있는 옷들을 박스핏으로 만들어주세요.`;
 
   const {
     data: validFormData,
