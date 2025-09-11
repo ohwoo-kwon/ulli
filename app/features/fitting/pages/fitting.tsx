@@ -88,6 +88,11 @@ export default function Fitting() {
   };
 
   const handleReFit = () => {
+    const isOk = confirm(
+      "아직 베타 서비스 입니다. 결과물이 정확하지 않을 수 있습니다. 그래도 시도해보시겠습니까?"
+    );
+
+    if (!isOk) return;
     setResultImgUrl("");
     const formData = new FormData();
     formData.set("myImgUrl", resultImgUrl);
